@@ -17,22 +17,22 @@ import XCGLogger
 
 open class ClientHelper : NSObject, CometdClientDelegate{
     
-    var sandboxId:String = ""
-    var server:String = ""
-    var apiUrl:String = ""
-    var connected:Bool = false
-    var userId:String = ""
-    var resource:String = ""
-    var token:String = ""
-    var publicToken:String = ""
+    var sandboxId: String = ""
+    var server: String = ""
+    var apiUrl: String = ""
+    var connected: Bool = false
+    var userId: String = ""
+    var resource: String = ""
+    var token: String = ""
+    var publicToken: String = ""
     
-    var firstHandshakeFlag:Bool = true
+    var firstHandshakeFlag: Bool = true
     
     var subscriptionQueue = Array<Subscription>()
     // Flag used for automatic reconnection
-    var wasConnected:Bool = false
+    var wasConnected: Bool = false
     // Delay in s before automatic reconnection
-    var automaticReconnectionDelay:Double = 10
+    var automaticReconnectionDelay: Double = 10
     
     var logLevel: XCGLogger.Level = .severe
     
@@ -44,7 +44,7 @@ open class ClientHelper : NSObject, CometdClientDelegate{
     let log = XCGLogger(identifier: "zetapushLogger", includeDefaultDestinations: true)
     let tags = XCGLogger.Constants.userInfoKeyTags
     
-    public init(apiUrl:String, sandboxId:String, authentication: AbstractHandshake, resource: String = "", logLevel: XCGLogger.Level = .severe ){
+    public init(apiUrl: String, sandboxId: String, authentication: AbstractHandshake, resource: String = "", logLevel: XCGLogger.Level = .severe) {
         
         self.sandboxId = sandboxId
         self.authentication = authentication
@@ -88,21 +88,27 @@ open class ClientHelper : NSObject, CometdClientDelegate{
     
     // Connect to server
     open func connect(){
-
+      log.debug("Client Connection: check the validation of server url : \(server)")
         if self.server == "" {
             // Check the http://api.zpush.io with sandboxId
             
             let url = URL(string: self.apiUrl + "/" + sandboxId)
+          
+          print("ZP server -> target url : " + url!.description)
             
             let task = URLSession.shared.dataTask(with: url!) { data, response, error in
-                
+            
+              print("ZP server -> server response data : " + data!.description)
+              let jsonAnyTest = try? JSONSerialization.jsonObject(with: data!, options: [])
+              let jsonTest = jsonAnyTest as! [String : AnyObject]
+              print("ZP server -> server response : " + jsonTest.description)
                 guard error == nil else {
                     self.log.error (error!)
                     return
                 }
                 
                 guard data != nil else {
-                    self.log.error ("No server for the sandbox", userInfo: [self.tags: "zetapush"])
+                    self.log.error ("Client Connection: No server for the sandbox", userInfo: [self.tags: "zetapush"])
                     return
                 }
                 
@@ -110,34 +116,31 @@ open class ClientHelper : NSObject, CometdClientDelegate{
                     let jsonAny = try? JSONSerialization.jsonObject(with: data, options: []),
                     let json = jsonAny as? [String : AnyObject],
                     let servers = json["servers"] as? [AnyObject] else {
-                    self.log.error ("Failed to parse data from server", userInfo: [self.tags: "zetapush"])
+                    self.log.error("Client Connection: Failed to parse data from server", userInfo: [self.tags: "zetapush"])
                     return
                 }
                 
                 let randomIndex = Int(arc4random_uniform(UInt32(servers.count)))
                 guard let randomServer = servers[randomIndex] as? String else {
-                        self.log.error ("No server in servers object", userInfo: [self.tags: "zetapush"])
+                        self.log.error("Client Connection: No server in servers object", userInfo: [self.tags: "zetapush"])
                     return
                 }
                 self.server = randomServer + "/strd"
-                self.log.debug("ZetaPush selected Server")
-                self.log.debug(self.server)
-                
+                self.log.debug("Client Connection: ZetaPush selected Server")
+                self.log.debug("Client Connection: server returned server url : \(self.server)")
+
                 self.cometdClient.setLogLevel(logLevel: self.logLevel)
                 self.cometdClient.configure(url: self.server)
                 self.cometdClient.connectHandshake(self.authentication!.getHandshakeFields(self))
             }
             
             task.resume()
- 
-            
         } else {
-            log.debug("ZetaPush configured Server", userInfo: [tags: "zetapush"])
+            log.debug("Client Connection: ZetaPush configured Server", userInfo: [tags: "zetapush"])
             log.debug(self.server, userInfo: [tags: "zetapush"])
             self.cometdClient.configure(url: self.server)
             self.cometdClient.connectHandshake(self.authentication!.getHandshakeFields(self))
         }
-        
     }
 
     open func subscribe(_ tuples: [ModelBlockTuple]) {
