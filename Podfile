@@ -9,24 +9,24 @@ target 'ZetaPushSwift' do
   use_frameworks!
 
   # Pods for ZetaPushSwift
-  pod 'Starscream'
-  pod 'SwiftyJSON', '~> 3.1'
-  pod 'PromiseKit', '~> 6.3'
-  pod 'XCGLogger', '~> 6.0'
-  pod 'Gloss', '~> 2.0'
+  pod 'Starscream', '3.0.6'
+  pod 'SwiftyJSON', '~> 4.2'
+  pod 'PromiseKit', '~> 6.8'
+  pod 'XCGLogger', '~> 6.1'
+  pod 'Gloss', '~> 2.1'
 end
 
 post_install do |installer|
     
     installer.pods_project.build_configurations.each do |config|
         config.build_settings['SWIFT_SUPPRESS_WARNINGS'] = 'YES'
-        config.build_settings['SWIFT_VERSION'] = '4'
+        config.build_settings['SWIFT_VERSION'] = '4.2'
     end
     
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             config.build_settings['SWIFT_SUPPRESS_WARNINGS'] = 'YES'
-            config.build_settings['SWIFT_VERSION'] = '4'
+            config.build_settings['SWIFT_VERSION'] = '4.2'
         end
     end
 end

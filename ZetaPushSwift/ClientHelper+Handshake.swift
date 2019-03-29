@@ -90,7 +90,7 @@ open class CredentialsHanshake : AbstractHandshake {
 
 open class Authentication {
     
-    open static func createHandshake(_ login: String, password: String, deploymentId: String, authType: String) -> AbstractHandshake {
+    public static func createHandshake(_ login: String, password: String, deploymentId: String, authType: String) -> AbstractHandshake {
         if password.isEmpty {
             return TokenHandshake(token: login, deploymentId: deploymentId, authType: authType)
         } else {
@@ -98,15 +98,15 @@ open class Authentication {
         }
     }
     
-    open static func simple(_ login: String, password: String, deploymentId: String) -> AbstractHandshake {
+    public static func simple(_ login: String, password: String, deploymentId: String) -> AbstractHandshake {
         return createHandshake(login, password: password, deploymentId: deploymentId, authType: AuthentType.Auth_Simple.rawValue)
     }
     
-    open static func weak(_ token: String, deploymentId: String) -> AbstractHandshake {
+    public static func weak(_ token: String, deploymentId: String) -> AbstractHandshake {
         return createHandshake(token, password: "", deploymentId: deploymentId, authType: AuthentType.Auth_Weak.rawValue)
     }
     
-    open static func delegating(_ token: String, deploymentId: String) ->AbstractHandshake {
+    public static func delegating(_ token: String, deploymentId: String) ->AbstractHandshake {
         return createHandshake(token, password: "", deploymentId: deploymentId, authType: AuthentType.Auth_Delegating.rawValue)
     }
     

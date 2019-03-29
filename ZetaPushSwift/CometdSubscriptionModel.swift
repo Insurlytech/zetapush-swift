@@ -22,10 +22,10 @@ public enum CometdSubscriptionModelError: Error {
 open class CometdSubscriptionModel {
     static var id: Int = 0;
     /// Subscription URL
-    open let subscriptionUrl: String
+    public let subscriptionUrl: String
     
     /// Channel type for request
-    open let bayeuxChannel: BayeuxChannel
+    public let bayeuxChannel: BayeuxChannel
     
     /// Uniqle client id for socket
     open var clientId: String?
