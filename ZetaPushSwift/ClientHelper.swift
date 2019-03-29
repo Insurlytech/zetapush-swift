@@ -94,14 +94,14 @@ open class ClientHelper : NSObject, CometdClientDelegate{
             
             let url = URL(string: self.apiUrl + "/" + sandboxId)
           
-          print("ZP server -> target url : " + url!.description)
+            self.log.verbose("ZP server -> target url : " + url!.description)
             
             let task = URLSession.shared.dataTask(with: url!) { data, response, error in
             
-              print("ZP server -> server response data : " + data!.description)
+              self.log.verbose("ZP server -> server response data : " + data!.description)
               let jsonAnyTest = try? JSONSerialization.jsonObject(with: data!, options: [])
               let jsonTest = jsonAnyTest as! [String : AnyObject]
-              print("ZP server -> server response : " + jsonTest.description)
+              self.log.verbose("ZP server -> server response : " + jsonTest.description)
                 guard error == nil else {
                     self.log.error (error!)
                     return

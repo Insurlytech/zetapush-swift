@@ -29,7 +29,6 @@ internal class WebsocketTransport: Transport {
     self.closeConnection()
     self.webSocket = WebSocket(url: URL(string:self.urlString!)!)
     if let webSocket = self.webSocket {
-//      webSocket.delegate = self
       webSocket.advancedDelegate = self
       webSocket.pongDelegate = self
       webSocket.connect()
@@ -74,35 +73,6 @@ extension WebsocketTransport: WebSocketPongDelegate {
   }
 }
 
-//extension WebsocketTransport: WebSocketDelegate {
-//  internal func websocketDidConnect(socket: WebSocketClient) {
-//    log.debug()
-//    self.delegate?.didConnect()
-//  }
-//
-//  internal func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-//    if error == nil {
-//      log.debug("Cometd: lostConnection")
-//      self.delegate?.didDisconnect(CometdSocketError.lostConnection)
-//    } else {
-//      log.debug("Cometd: error : \(error)")
-//      self.delegate?.didFailConnection(error)
-//    }
-//  }
-//
-//  internal func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
-//    log.debug("Cometd: message: \(text)")
-//    self.delegate?.didReceiveMessage(text)
-//  }
-//
-//  // MARK: TODO
-//  internal func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
-//    log.debug("Cometd: Received data: \(data.count)")
-//    //self.socket.writeData(data)
-//  }
-//
-//}
-
 extension WebsocketTransport: WebSocketAdvancedDelegate {
   func websocketDidConnect(socket: WebSocket) {
     log.debug("Advanced transport delegate : connection did connect")
@@ -126,7 +96,6 @@ extension WebsocketTransport: WebSocketAdvancedDelegate {
   
   func websocketDidReceiveData(socket: WebSocket, data: Data, response: WebSocket.WSResponse) {
     log.debug("Advanced transport delegate: Received data: \(data.count), from response : \(response)")
-    //self.socket.writeData(data)
   }
   
   func websocketHttpUpgrade(socket: WebSocket, request: String) {
