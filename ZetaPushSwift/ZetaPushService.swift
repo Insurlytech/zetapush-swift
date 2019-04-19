@@ -18,11 +18,11 @@ public enum ZetaPushServiceError: Error {
     
     static func genericFromDictionnary(_ messageDict: NSDictionary) -> ZetaPushServiceError {
         
-        let errorCode = ZetaPushUtils.getStringIfExistsFromNSDictionnary(key: "code", dict: messageDict)
-        let errorMessage = ZetaPushUtils.getStringIfExistsFromNSDictionnary(key: "message", dict: messageDict)
-        let errorSource = ZetaPushUtils.getNSDictionnaryIfExistsFromNSDictionnary(key: "source", dict: messageDict)
+        let errorCode = messageDict["code"] as? String ?? ""
+        let errorMessage = messageDict["message"] as? String ?? ""
+        let errorSource = messageDict["source"] as? NSDictionary ?? [:]
         
-        return ZetaPushServiceError.genericError(errorCode: errorCode, errorMessage: errorMessage, errorSource: errorSource!)
+        return ZetaPushServiceError.genericError(errorCode: errorCode, errorMessage: errorMessage, errorSource: errorSource)
     }
 }
 

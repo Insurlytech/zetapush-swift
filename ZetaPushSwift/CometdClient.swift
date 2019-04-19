@@ -59,7 +59,7 @@ public struct Subscription: Equatable{
 // MARK: CometdClient
 open class CometdClient : TransportDelegate {
     open var cometdURLString:String?
-    open var handshakeFields:[String:AnyObject]?
+    open var handshakeFields:[String: Any]?
     open var cometdClientId:String?
     
     open weak var delegate:CometdClientDelegate?
@@ -140,7 +140,7 @@ open class CometdClient : TransportDelegate {
         self.transport!.delegate = self;
     }
     
-    open func connectHandshake(_ handshakeFields:[String:AnyObject]) {
+    open func connectHandshake(_ handshakeFields:[String: Any]) {
         self.handshakeFields = handshakeFields
         log.debug("CometdClient handshake")
         

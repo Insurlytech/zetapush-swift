@@ -58,18 +58,16 @@ public enum ZetaPushMacroError: Error {
     case unknowError
     case decodingError
     
-    static func genericFromDictionnary(_ messageDict: NSDictionary) -> ZetaPushMacroError {
-        
-        let errorCode = ZetaPushUtils.getStringIfExistsFromNSDictionnary(key: "code", dict: messageDict)
-        let errorMessage = ZetaPushUtils.getStringIfExistsFromNSDictionnary(key: "message", dict: messageDict)
-        let errorLocation = ZetaPushUtils.getStringIfExistsFromNSDictionnary(key: "location", dict: messageDict)
+  static func genericFromDictionnary(_ messageDict: NSDictionary) -> ZetaPushMacroError {
+        let errorCode = messageDict["code"] as? String ?? ""
+        let errorMessage = messageDict["message"] as? String ?? ""
+        let errorLocation = messageDict["location"] as? String ?? ""
         var macroName = ""
-        if messageDict.object(forKey: "source") != nil {
-            let source: AnyObject = messageDict["source"] as AnyObject
-            let data: AnyObject = source["data"] as AnyObject
-            macroName = data["name"] as! String
+        if messageDict["source"] != nil {
+          let source = messageDict["source"] as? [String: Any] ?? [:]
+          let data = source["data"] as? [String: Any] ?? [:]
+          macroName = data["name"] as? String ?? ""
         }
-            
         return ZetaPushMacroError.genericError(macroName: macroName, errorMessage: errorMessage, errorCode: errorCode, errorLocation: errorLocation)
     }
 }

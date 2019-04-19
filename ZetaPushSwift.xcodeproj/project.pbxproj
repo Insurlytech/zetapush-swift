@@ -36,6 +36,8 @@
 		C5896E811E841FE10037800F /* CometdSubscriptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5896E801E841FE10037800F /* CometdSubscriptionModel.swift */; };
 		C5F9C0CF1E8D2E47000B8ECF /* ZetaPushServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F9C0CD1E8D2E47000B8ECF /* ZetaPushServiceDelegate.swift */; };
 		C5F9C0D01E8D2E47000B8ECF /* ConnectionStatusDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F9C0CE1E8D2E47000B8ECF /* ConnectionStatusDelegate.swift */; };
+		FFB7C3D52269D9AE0031F6EF /* ZetaPushProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB7C3D42269D9AE0031F6EF /* ZetaPushProxy.swift */; };
+		FFB7C3D72269DA1E0031F6EF /* Logger+tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB7C3D62269DA1E0031F6EF /* Logger+tags.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +74,8 @@
 		C5F9C0CD1E8D2E47000B8ECF /* ZetaPushServiceDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZetaPushServiceDelegate.swift; sourceTree = "<group>"; };
 		C5F9C0CE1E8D2E47000B8ECF /* ConnectionStatusDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionStatusDelegate.swift; sourceTree = "<group>"; };
 		E327A1F3727E6CF61C97EADC /* Pods-ZetaPushSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZetaPushSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZetaPushSwift/Pods-ZetaPushSwift.debug.xcconfig"; sourceTree = "<group>"; };
+		FFB7C3D42269D9AE0031F6EF /* ZetaPushProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZetaPushProxy.swift; sourceTree = "<group>"; };
+		FFB7C3D62269DA1E0031F6EF /* Logger+tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+tags.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +148,7 @@
 		C5896E261E84121A0037800F /* ZetaPushSwift */ = {
 			isa = PBXGroup;
 			children = (
+				FFB7C3D32269D9610031F6EF /* Extension */,
 				C53F8E501E93E8EA00D5C62C /* ZetaPush */,
 				C5F9C0CE1E8D2E47000B8ECF /* ConnectionStatusDelegate.swift */,
 				C5896E671E841D190037800F /* Transport.swift */,
@@ -163,6 +168,15 @@
 				C5896E801E841FE10037800F /* CometdSubscriptionModel.swift */,
 			);
 			path = ZetaPushSwift;
+			sourceTree = "<group>";
+		};
+		FFB7C3D32269D9610031F6EF /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				FFB7C3D42269D9AE0031F6EF /* ZetaPushProxy.swift */,
+				FFB7C3D62269DA1E0031F6EF /* Logger+tags.swift */,
+			);
+			name = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,6 +233,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = C5896E1A1E8412190037800F;
@@ -282,7 +297,9 @@
 				C5896E7F1E841FB90037800F /* CometdClientDelegate.swift in Sources */,
 				C58107F81E8A8695008266F0 /* ClientHelper.swift in Sources */,
 				C5896E681E841D190037800F /* Transport.swift in Sources */,
+				FFB7C3D72269DA1E0031F6EF /* Logger+tags.swift in Sources */,
 				C5896E791E841F4C0037800F /* CometdClient+Parsing.swift in Sources */,
+				FFB7C3D52269D9AE0031F6EF /* ZetaPushProxy.swift in Sources */,
 				C53F8E4B1E93E86D00D5C62C /* ZetaPushWeakClient.swift in Sources */,
 				C53F8E521E93F8F300D5C62C /* ZetaPushService.swift in Sources */,
 				C5896E6A1E841D450037800F /* WebsocketTransport.swift in Sources */,
