@@ -49,26 +49,32 @@ open class ZetaPushSmartClient: ClientHelper {
         if !stringPublicToken.isEmpty {
             // The user is weakly authenticated and the token must be present
             super.init(apiUrl: zetaPushDefaultConfig.apiUrl, sandboxId: sandboxId, authentication: Authentication.weak(stringToken, deploymentId: weakDeploymentId), logLevel: logLevel)
+          
+            if (storedSandboxId == sandboxId) {
+              self.token = stringToken
+              self.publicToken = stringPublicToken
+            }
         } else {
             if !stringToken.isEmpty {
                 // The user is strongly (with a simple authent) authenticated and the token is present
                 super.init(apiUrl: zetaPushDefaultConfig.apiUrl, sandboxId: sandboxId, authentication: Authentication.simple(stringToken, password:"", deploymentId: simpleDeploymentId), logLevel: logLevel)
+              
+                if (storedSandboxId == sandboxId) {
+                  self.token = stringToken
+                }
             } else {
                 // The use is not authenticated, we connect him with a weak authent
                 super.init(apiUrl: zetaPushDefaultConfig.apiUrl, sandboxId: sandboxId, authentication: Authentication.weak("", deploymentId: weakDeploymentId), logLevel: logLevel)
             }
         }
-        
-        
-        
     }
     
     public convenience init(sandboxId: String, logLevel: XCGLogger.Level = .severe){
         self.init(sandboxId: sandboxId, weakDeploymentId: zetaPushDefaultConfig.weakDeploymentId, simpleDeploymentId: zetaPushDefaultConfig.simpleDeploymentId, logLevel: logLevel)
     }
     
-    override func storeHandshakeToken(_ authenticationDict: NSDictionary){
-        log.debug("storeHandshakeToken")
+    override func storeHandshakeToken(_ authenticationDict: NSDictionary) {
+        log.debug(#function)
         let defaults = UserDefaults.standard
         defaults.set(self.getSandboxId(), forKey: zetaPushDefaultKeys.sandboxId)
         if authenticationDict["token"] != nil {
@@ -79,27 +85,30 @@ open class ZetaPushSmartClient: ClientHelper {
         }
     }
     
-    override func eraseHandshakeToken(){
+    override func eraseHandshakeToken() {
+        log.debug(#function)
+
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: zetaPushDefaultKeys.sandboxId)
         defaults.removeObject(forKey: zetaPushDefaultKeys.token)
         defaults.removeObject(forKey: zetaPushDefaultKeys.publicToken)
+      
+        self.token = ""
+        self.publicToken = ""
     }
     
     override open func logout() {
         setAuthentication(authentication: Authentication.weak("", deploymentId: self.weakDeploymentId))
         super.logout()
     }
-    
+  
     open func setCredentials(login: String, password: String){
         self.login = login
         self.password = password
-        
         let auth = Authentication.simple(login, password: password, deploymentId: self.simpleDeploymentId)
         self.setAuthentication(authentication: auth)
         
         // Delete previously stored tokens
         eraseHandshakeToken()
     }
-    
 }
