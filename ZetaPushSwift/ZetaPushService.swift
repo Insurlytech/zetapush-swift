@@ -131,13 +131,19 @@ open class ZetaPushService: NSObject {
       
       sub = clientHelper.subscribe(clientHelper.composeServiceChannel(verb, deploymentId: deploymentId), block: channelBlockServiceCall)
       subError = clientHelper.subscribe(clientHelper.composeServiceChannel("error", deploymentId: deploymentId), block: channelBlockServiceError)
-      let message = parameters.toJSON() as? [String: Any] ?? [:]
+      guard let message = parameters.toJSON() as? [String: Any] else {
+        log.zp.error(#function + "message is nil")
+        return
+      }
       clientHelper.publish(clientHelper.composeServiceChannel(verb, deploymentId: deploymentId), message: message)
     }
   }
   
   open func publish<T: Glossy>(verb: String, parameters: T) {
-    let message = parameters.toJSON() as? [String: Any] ?? [:]
+    guard let message = parameters.toJSON() as? [String: Any] else {
+      log.zp.error(#function + "message is nil")
+      return
+    }
     clientHelper.publish(clientHelper.composeServiceChannel(verb, deploymentId: deploymentId), message: message)
   }
   
