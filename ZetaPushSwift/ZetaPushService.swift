@@ -18,10 +18,10 @@ public enum ZetaPushServiceError: Error {
   case decodingError
   
   static func genericFromDictionnary(_ messageDict: NSDictionary) -> ZetaPushServiceError {
-    let errorCode = messageDict["code"] as? String ?? ""
-    let errorMessage = messageDict["message"] as? String ?? ""
+    guard let errorCode = messageDict["code"] as? String, let errorMessage = messageDict["message"] as? String else {
+      return .unknowError
+    }
     let errorSource = messageDict["source"] as? NSDictionary ?? [:]
-    
     return ZetaPushServiceError.genericError(errorCode: errorCode, errorMessage: errorMessage, errorSource: errorSource)
   }
 }

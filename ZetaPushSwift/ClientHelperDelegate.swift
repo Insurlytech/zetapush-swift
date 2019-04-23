@@ -9,7 +9,7 @@
 import Foundation
 
 // MARK: CometdClientDelegate
-public protocol ClientHelperDelegate: NSObjectProtocol {
+public protocol ClientHelperDelegate: class {
   func onConnectionEstablished(_ client: ClientHelper)
   func onConnectionBroken(_ client: ClientHelper)
   func onConnectionClosed(_ client: ClientHelper)

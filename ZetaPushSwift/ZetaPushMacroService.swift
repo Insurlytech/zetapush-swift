@@ -71,12 +71,12 @@ public enum ZetaPushMacroError: Error {
   case decodingError
   
   static func genericFromDictionnary(_ messageDict: NSDictionary) -> ZetaPushMacroError {
-    let errorCode = messageDict["code"] as? String ?? ""
-    let errorMessage = messageDict["message"] as? String ?? ""
+    guard let errorCode = messageDict["code"] as? String, let errorMessage = messageDict["message"] as? String else {
+      return .unknowError
+    }
     let errorLocation = messageDict["location"] as? String ?? ""
     var macroName = ""
-    if messageDict["source"] != nil {
-      let source = messageDict["source"] as? [String: Any] ?? [:]
+    if let source = messageDict["source"] as? [String: Any] {
       let data = source["data"] as? [String: Any] ?? [:]
       macroName = data["name"] as? String ?? ""
     }

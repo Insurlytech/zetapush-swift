@@ -31,7 +31,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   // Flag used for automatic reconnection
   var wasConnected = false
   // Delay in s before automatic reconnection
-  var automaticReconnectionDelay: Double = 10
+  var automaticReconnectionDelay = 10
   
   var logLevel: XCGLogger.Level = .severe
   
@@ -74,7 +74,9 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     self.authentication = authentication
   }
   
-  open func setAutomaticReconnectionDelay(delay: Double) {
+  /// - Parameters:
+  ///   - delay: Delay in seconds
+  open func setAutomaticReconnectionDelay(delay: Int) {
     automaticReconnectionDelay = delay
   }
   
@@ -93,9 +95,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     guard server.isEmpty else {
       log.zp.debug("Client Connection: ZetaPush configured Server")
       log.zp.debug(self.server)
-      cometdClient.configure(url: server)
-      let handshakeFields = authentication?.getHandshakeFields(self) ?? [:]
-      cometdClient.connectHandshake(handshakeFields)
+      configureCometdClient()
       return
     }
     let stringUrl = self.apiUrl + "/" + sandboxId
@@ -129,7 +129,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
           return
       }
       
-      let randomIndex = Int(arc4random_uniform(UInt32(servers.count)))
+      let randomIndex = Int.random(in: 0..<servers.count)
       guard let randomServer = servers[randomIndex] as? String else {
         self.log.zp.error("Client Connection: No server in servers object")
         return
@@ -139,10 +139,18 @@ open class ClientHelper: NSObject, CometdClientDelegate {
       self.log.debug("Client Connection: server returned server url : \(self.server)")
       
       self.cometdClient.setLogLevel(logLevel: self.logLevel)
-      self.cometdClient.configure(url: self.server)
-      self.cometdClient.connectHandshake(self.authentication!.getHandshakeFields(self))
+      self.configureCometdClient()
     }
     task.resume()
+  }
+  
+  private func configureCometdClient() {
+    cometdClient.configure(url: server)
+    guard let handshakeFields = authentication?.getHandshakeFields(self) else {
+      log.zp.error("configureCometdClient: handshakeFields is nil")
+      return
+    }
+    cometdClient.connectHandshake(handshakeFields)
   }
   
   open func subscribe(_ tuples: [ModelBlockTuple]) {
@@ -169,11 +177,11 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     return sub
   }
   
-  open func publish(_ channel: String, message:[String: Any]) {
+  open func publish(_ channel: String, message: [String: Any]) {
     cometdClient.publish(message, channel: channel)
   }
   
-  open func unsubscribe(_ subscription:Subscription){
+  open func unsubscribe(_ subscription: Subscription) {
     log.zp.debug("ClientHelper unsubscribe")
     cometdClient.unsubscribeFromChannel(subscription)
     if let index = subscriptionQueue.index(of: subscription){
@@ -181,13 +189,13 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     }
   }
   
-  open func logout(){
+  open func logout() {
     log.zp.debug("ClientHelper logout")
     eraseHandshakeToken()
     disconnect()
   }
   
-  open func setForceSecure(_ isSecure: Bool){
+  open func setForceSecure(_ isSecure: Bool) {
     cometdClient.setForceSecure(isSecure)
   }
   
@@ -272,17 +280,21 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   open func handshakeSucceeded(_ client: CometdClient, handshakeDict: NSDictionary) {
     log.zp.debug("ClientHelper Handshake Succeeded")
     log.zp.debug(handshakeDict)
-    let authentication: NSDictionary = handshakeDict["authentication"] as? NSDictionary ?? [:]
-    
-    if authentication["token"] != nil {
-      token = (authentication["token"] as? String) ?? ""
+    guard let authentication = handshakeDict["authentication"] as? NSDictionary else {
+      log.zp.error("handshakeSucceeded: authentication is nil")
+      return
     }
     
-    if authentication["publicToken"] != nil {
-      publicToken = authentication["publicToken"] as? String ?? ""
+    if let _token = authentication["token"] as? String {
+      token = _token
+    }
+    if let _publicToken = authentication["publicToken"] as? String {
+      publicToken = _publicToken
+    }
+    if let _userId = authentication["userId"] as? String {
+      userId = _userId
     }
     
-    userId = authentication["userId"] as? String ?? ""
     storeHandshakeToken(authentication)
     
     subsbribeQueuedSubscriptions()
@@ -294,7 +306,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     log.zp.debug("ClientHelper subscribe queued subscriptions")
     // Automatic resubscribe after handshake (not the first one)
     if !firstHandshakeFlag {
-      let tempArray = subscriptionQueue.map({ $0 })
+      let tempArray = subscriptionQueue
       subscriptionQueue.removeAll()
       tempArray.forEach({ subscribe($0.channel, block: $0.callback) })
     }
@@ -309,7 +321,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   open func connectionFailed(_ client: CometdClient) {
     log.zp.error("ClientHelper Failed to connect to Cometd server!")
     if wasConnected {
-      DispatchQueue.main.asyncAfter(deadline: .now() + automaticReconnectionDelay) { [weak self] in
+      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(automaticReconnectionDelay)) { [weak self] in
         self?.connect()
       }
     }
@@ -322,7 +334,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     delegate?.onConnectionClosed(self)
   }
   
-  open func disconnectedAdviceReconnect(_ client:CometdClient) {
+  open func disconnectedAdviceReconnect(_ client: CometdClient) {
     log.zp.debug("ClientHelper Disconnected from Cometd server")
     delegate?.onConnectionClosedAdviceReconnect(self)
   }
