@@ -100,11 +100,14 @@ open class ZetaPushMacroService : NSObject {
   let log = XCGLogger(identifier: "macroserviceLogger", includeDefaultDestinations: true)
   
   // Callback for /completed macro channel
-  lazy var channelBlockMacroCompleted:ChannelSubscriptionBlock = { messageDict -> Void in
+  lazy var channelBlockMacroCompleted: ChannelSubscriptionBlock = { messageDict -> Void in
     self.log.debug("ZetaPushMacroService channelBlockMacroCompleted")
     self.log.debug(messageDict)
     
-    let macroChannel = self.composeServiceChannel(messageDict["name"] as? String ?? "")
+    guard let name = messageDict["name"] as? String else {
+      return
+    }
+    let macroChannel = self.composeServiceChannel(name)
     guard let result = messageDict["result"] as? NSDictionary else {
       return
     }
@@ -138,13 +141,13 @@ open class ZetaPushMacroService : NSObject {
     }
     
     // Subscribe to completed macro channel
-    self.macroChannel = "/service/" + self.clientHelper!.getSandboxId() + "/" + self.deploymentId! + "/" + "completed"
+    self.macroChannel = composeServiceChannel("completed")
     self.clientHelper?.subscribe(self.macroChannel!, block: channelBlockMacroCompleted)
     
-    self.macroChannelError = "/service/" + self.clientHelper!.getSandboxId() + "/" + self.deploymentId! + "/" + "error"
+    self.macroChannelError = composeServiceChannel("error")
     self.clientHelper?.subscribe(self.macroChannelError!, block: channelBlockMacroError)
     
-    self.macroChannelTrace = "/service/" + self.clientHelper!.getSandboxId() + "/" + self.deploymentId! + "/" + "trace"
+    self.macroChannelTrace = composeServiceChannel("trace")
     self.clientHelper?.subscribe(self.macroChannelTrace!, block: channelBlockMacroTrace)
   }
   
@@ -153,7 +156,10 @@ open class ZetaPushMacroService : NSObject {
   }
   
   private func composeServiceChannel(_ verb: String) -> String {
-    return "/service/" + clientHelper!.getSandboxId() + "/" + deploymentId! + "/" + verb
+    guard let clientHelper = self.clientHelper, let deploymentId = self.deploymentId else {
+      fatalError("init ZetaPushMacroService: clientHelper or deploymentId is nil")
+    }
+    return "/service/" + clientHelper.getSandboxId() + "/" + deploymentId + "/" + verb
   }
   
   open func subscribe(verb: String, block: ChannelSubscriptionBlock? = nil) -> Subscription {
@@ -165,8 +171,8 @@ open class ZetaPushMacroService : NSObject {
       }
       // Create a structure to store the callback and the id of
       sub.callback = block
-      sub.id = channelSubscriptionBlocks[subscribedChannel]!.count
-      channelSubscriptionBlocks[subscribedChannel]!.append(sub)
+      sub.id = channelSubscriptionBlocks[subscribedChannel]?.count ?? 0
+      channelSubscriptionBlocks[subscribedChannel]?.append(sub)
     }
     return sub
   }
@@ -176,7 +182,7 @@ open class ZetaPushMacroService : NSObject {
     if let index = subscriptionArray?.index(of: subscription) {
       subscriptionArray?.remove(at: index)
     }
-    if subscriptionArray?.count == 0 {
+    if subscriptionArray?.isEmpty == true {
       self.channelSubscriptionBlocks[subscription.channel] = nil
     }
   }
@@ -206,12 +212,8 @@ open class ZetaPushMacroService : NSObject {
       var sub: Subscription?
       let channelBlockMacroCall: ChannelSubscriptionBlock = { [weak self] messageDict -> Void in
         // Check if the requestId is similar to the one sent
-        if messageDict.object(forKey: "requestId") != nil {
-          if let msgRequestId = messageDict["requestId"] as? String {
-            if msgRequestId != requestId {
-              return
-            }
-          }
+        if let msgRequestId = messageDict["requestId"] as? String, msgRequestId != requestId {
+          return
         }
         
         guard let subscription = sub else { return }
@@ -220,10 +222,7 @@ open class ZetaPushMacroService : NSObject {
         if let result = messageDict["result"] as? NSDictionary {
           seal.fulfill(result)
         }
-        guard let errors = messageDict["errors"] as? [[String: Any]], errors.isEmpty else {
-          return
-        }
-        if let error = errors.first as? NSDictionary {
+        if let errors = messageDict["errors"] as? [[String: Any]], errors.isEmpty, let error = errors.first as? NSDictionary {
           seal.reject(ZetaPushMacroError.genericFromDictionnary(error))
         } else {
           seal.reject(ZetaPushMacroError.unknowError)
@@ -247,12 +246,8 @@ open class ZetaPushMacroService : NSObject {
       var sub: Subscription?
       let channelBlockMacroCall: ChannelSubscriptionBlock = { [weak self] messageDict -> Void in
         // Check if the requestId is similar to the one sent
-        if messageDict.object(forKey: "requestId") != nil {
-          if let msgRequestId = messageDict["requestId"] as? String {
-            if msgRequestId != requestId {
-              return
-            }
-          }
+        if let msgRequestId = messageDict["requestId"] as? String, msgRequestId != requestId {
+          return
         }
         
         guard let subscription = sub else { return }
@@ -267,10 +262,7 @@ open class ZetaPushMacroService : NSObject {
           let completion = U(result: zpMessage, name: verb, requestId: requestId)
           seal.fulfill(completion)
         }
-        guard let errors = messageDict["errors"] as? [[String: Any]], errors.isEmpty else {
-          return
-        }
-        if let error = errors.first as? NSDictionary {
+        if let errors = messageDict["errors"] as? [[String: Any]], errors.isEmpty, let error = errors.first as? NSDictionary {
           seal.reject(ZetaPushMacroError.genericFromDictionnary(error))
         } else {
           seal.reject(ZetaPushMacroError.unknowError)
@@ -294,12 +286,8 @@ open class ZetaPushMacroService : NSObject {
       
       let channelBlockMacroCall:ChannelSubscriptionBlock = { [weak self] messageDict -> Void in
         // Check if the requestId is similar to the one sent
-        if messageDict.object(forKey: "requestId") != nil {
-          if let msgRequestId = messageDict["requestId"] as? String {
-            if msgRequestId != requestId {
-              return
-            }
-          }
+        if let msgRequestId = messageDict["requestId"] as? String, msgRequestId != requestId {
+          return
         }
         
         guard let subscription = sub else { return }
@@ -314,10 +302,7 @@ open class ZetaPushMacroService : NSObject {
           let completion = U(result: zpMessage, name: verb, requestId: requestId)
           seal.fulfill(completion)
         }
-        guard let errors = messageDict["errors"] as? [[String: Any]], errors.isEmpty else {
-          return
-        }
-        if let error = errors.first as? NSDictionary {
+        if let errors = messageDict["errors"] as? [[String: Any]], errors.isEmpty, let error = errors.first as? NSDictionary {
           seal.reject(ZetaPushMacroError.genericFromDictionnary(error))
         } else {
           seal.reject(ZetaPushMacroError.unknowError)
