@@ -62,7 +62,7 @@ extension CometdClient {
             messageNumber = 0
         }
         
-        return "\(self.messageNumber)".encodedString()
+        return "\(self.messageNumber)".zp.encodedString()
     }
     
     // MARK:

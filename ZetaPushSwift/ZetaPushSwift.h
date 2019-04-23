@@ -1,9 +1,9 @@
 //
 //  ZetaPushSwift.h
-//  ZetaPushSwift
+//  ZetaPush
 //
-//  Created by Morvan Mikaël on 23/03/2017.
-//  Copyright © 2017 ZetaPush. All rights reserved.
+//  Created by Leocare on 19/04/2019.
+//  Copyright © 2019 Leocare. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -15,5 +15,3 @@ FOUNDATION_EXPORT double ZetaPushSwiftVersionNumber;
 FOUNDATION_EXPORT const unsigned char ZetaPushSwiftVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <ZetaPushSwift/PublicHeader.h>
-
-

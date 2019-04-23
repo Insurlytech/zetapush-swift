@@ -1,6 +1,6 @@
 //
 //  Logger+tags.swift
-//  ZetaPushSwift
+//  ZetaPush
 //
 //  Created by Anthony Guiguen on 19/04/2019.
 //  Copyright © 2019 ZetaPush. All rights reserved.
