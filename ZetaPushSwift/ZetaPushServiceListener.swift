@@ -44,10 +44,7 @@ open class ZetaPushServiceListener {
   
   ///
   public func getModelBlock<T: Glossy>(verb: String, callback: @escaping (T) -> Void) -> ModelBlockTuple {
-    guard let deploymentId = zetaPushService.deploymentId else {
-      fatalError("getModelBlock: deploymentId is nil")
-    }
-    let channel = clientHelper.composeServiceChannel(verb, deploymentId: deploymentId)
+    let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
     let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: clientHelper.cometdClient.cometdClientId)
     return ModelBlockTuple(model: model, block: { (messageDict: NSDictionary) -> Void in
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
@@ -60,10 +57,7 @@ open class ZetaPushServiceListener {
   
   ///
   public func getModelBlock<T: Glossy>(verb: String, callback: @escaping ([T]) -> Void) -> ModelBlockTuple {
-    guard let deploymentId = zetaPushService.deploymentId else {
-      fatalError("getModelBlock: deploymentId is nil")
-    }
-    let channel = clientHelper.composeServiceChannel(verb, deploymentId: deploymentId)
+    let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
     let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: clientHelper.cometdClient.cometdClientId)
     return ModelBlockTuple(model: model, block: { (messageDict: NSDictionary) -> Void in
       guard let zpMessage: [T] = self.parse(messageDict: messageDict) else {
@@ -76,10 +70,7 @@ open class ZetaPushServiceListener {
   
   ///
   public func getModelBlock<T: NSDictionary>(verb: String, callback: @escaping (T) -> Void) -> ModelBlockTuple {
-    guard let deploymentId = zetaPushService.deploymentId else {
-      fatalError("getModelBlock: deploymentId is nil")
-    }
-    let channel = clientHelper.composeServiceChannel(verb, deploymentId: deploymentId)
+    let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
     let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: self.clientHelper.cometdClient.cometdClientId)
     return ModelBlockTuple(model: model, block: { (messageDict: NSDictionary) -> Void in
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
@@ -97,9 +88,6 @@ open class ZetaPushServiceListener {
   
   /// Generic Subscribe with a Generic parameter
   public func subscribe<T: Glossy>(verb: String, callback: @escaping (T) -> Void) {
-    guard let deploymentId = zetaPushService.deploymentId else {
-      fatalError("getModelBlock: deploymentId is nil")
-    }
     let channelBlockServiceCall: ChannelSubscriptionBlock =  { (messageDict) -> Void in
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
         self.onServiceError?(self.zetaPushService, ZetaPushServiceError.decodingError)
@@ -107,15 +95,12 @@ open class ZetaPushServiceListener {
       }
       callback(zpMessage)
     }
-    let channel = clientHelper.composeServiceChannel(verb, deploymentId: deploymentId)
+    let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
     clientHelper.subscribe(channel, block: channelBlockServiceCall)
   }
   
   /// Generic Subscribe with a Generic Array parameter
   public func subscribe<T: Glossy>(verb: String, callback: @escaping ([T]) -> Void) {
-    guard let deploymentId = zetaPushService.deploymentId else {
-      fatalError("getModelBlock: deploymentId is nil")
-    }
     let channelBlockServiceCall: ChannelSubscriptionBlock = { (messageDict) -> Void in
       
       guard let zpMessage: [T] = self.parse(messageDict: messageDict) else {
@@ -124,15 +109,12 @@ open class ZetaPushServiceListener {
       }
       callback(zpMessage)
     }
-    let channel = clientHelper.composeServiceChannel(verb, deploymentId: deploymentId)
+    let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
     clientHelper.subscribe(channel, block: channelBlockServiceCall)
   }
   
   /// Generic Subscribe with a NSDictionary parameter
   public func subscribe<T: NSDictionary>(verb: String, callback: @escaping (T) -> Void) {
-    guard let deploymentId = zetaPushService.deploymentId else {
-      fatalError("getModelBlock: deploymentId is nil")
-    }
     let channelBlockServiceCall: ChannelSubscriptionBlock = { (messageDict) -> Void in
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
         self.onServiceError?(self.zetaPushService, ZetaPushServiceError.decodingError)
@@ -140,7 +122,7 @@ open class ZetaPushServiceListener {
       }
       callback(zpMessage)
     }
-    let channel = clientHelper.composeServiceChannel(verb, deploymentId: deploymentId)
+    let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
     clientHelper.subscribe(channel, block: channelBlockServiceCall)
   }
   

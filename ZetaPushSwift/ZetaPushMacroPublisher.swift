@@ -15,7 +15,7 @@ import Gloss
 // MARK: - ZetaPushMacroPublisher
 open class ZetaPushMacroPublisher {
   // MARK: Properties
-  public var clientHelper: ClientHelper?
+  public let clientHelper: ClientHelper
   public var zetaPushMacroService: ZetaPushMacroService
   
   // MARK: Lifecycle
