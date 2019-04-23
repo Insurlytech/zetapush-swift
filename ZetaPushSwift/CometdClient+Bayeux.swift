@@ -95,7 +95,7 @@ extension CometdClient {
     // "version": "1.0",
     // "minimumVersion": "1.0beta",
     // "supportedConnectionTypes": ["long-polling", "callback-polling", "iframe", "websocket]
-    func handshake(_ data:[String:AnyObject]) {
+    func handshake(_ data:[String: Any]) {
         writeOperationQueue.sync { [unowned self] in
             let connTypes:NSArray = [BayeuxConnection.LongPolling.rawValue, BayeuxConnection.Callback.rawValue, BayeuxConnection.iFrame.rawValue, BayeuxConnection.WebSocket.rawValue]
             

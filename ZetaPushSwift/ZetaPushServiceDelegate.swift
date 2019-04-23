@@ -1,21 +1,22 @@
 //
 //  ZetaPushServiceDelegate.swift
-//  Pods
+//  ZetaPush
 //
-//  Created by Morvan Mikaël on 30/03/2017.
-//
+//  Created by Leocare on 19/04/2019.
+//  Copyright © 2019 Leocare. All rights reserved.
 //
 
 import Foundation
 
+// MARK: - ZetaPushServiceDelegate
 public protocol ZetaPushServiceDelegate: NSObjectProtocol {
-    func onDidSubscribeToChannel(_ client:ClientHelper, channel:String)
-    func onDidUnsubscribeFromChannel(_ client:ClientHelper, channel:String)
-    func onSubscriptionFailedWithError(_ client:ClientHelper, error:subscriptionError)
+  func onDidSubscribeToChannel(_ client: ClientHelper, channel: String)
+  func onDidUnsubscribeFromChannel(_ client: ClientHelper, channel: String)
+  func onSubscriptionFailedWithError(_ client: ClientHelper, error: subscriptionError)
 }
 
 public extension ZetaPushServiceDelegate {
-    func onDidSubscribeToChannel(_ client:ClientHelper, channel:String){}
-    func onDidUnsubscribeFromChannel(_ client:ClientHelper, channel:String){}
-    func onSubscriptionFailedWithError(_ client:ClientHelper, error:subscriptionError){}
+  func onDidSubscribeToChannel(_ client: ClientHelper, channel: String) { }
+  func onDidUnsubscribeFromChannel(_ client: ClientHelper, channel: String) { }
+  func onSubscriptionFailedWithError(_ client: ClientHelper, error: subscriptionError) { }
 }

@@ -16,14 +16,13 @@ public enum ZetaPushServiceError: Error {
     case unknowError
     case decodingError
     
-    static func genericFromDictionnary(_ messageDict: NSDictionary) -> ZetaPushServiceError {
-        
-        let errorCode = ZetaPushUtils.getStringIfExistsFromNSDictionnary(key: "code", dict: messageDict)
-        let errorMessage = ZetaPushUtils.getStringIfExistsFromNSDictionnary(key: "message", dict: messageDict)
-        let errorSource = ZetaPushUtils.getNSDictionnaryIfExistsFromNSDictionnary(key: "source", dict: messageDict)
-        
-        return ZetaPushServiceError.genericError(errorCode: errorCode, errorMessage: errorMessage, errorSource: errorSource!)
+  static func genericFromDictionnary(_ messageDict: NSDictionary) -> ZetaPushServiceError {
+    guard let errorCode = messageDict["code"] as? String, let errorMessage = messageDict["message"] as? String else {
+      return .unknowError
     }
+    let errorSource = messageDict["source"] as? NSDictionary ?? [:]
+    return ZetaPushServiceError.genericError(errorCode: errorCode, errorMessage: errorMessage, errorSource: errorSource)
+  }
 }
 
 
