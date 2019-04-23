@@ -129,8 +129,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
           return
       }
       
-      let randomIndex = Int.random(in: 0..<servers.count)
-      guard let randomServer = servers[randomIndex] as? String else {
+      guard let randomServer = servers.randomElement() as? String else {
         self.log.zp.error("Client Connection: No server in servers object")
         return
       }
