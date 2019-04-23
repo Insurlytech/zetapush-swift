@@ -169,7 +169,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     return sub
   }
   
-  open func publish(_ channel:String, message:[String:AnyObject]) {
+  open func publish(_ channel: String, message:[String: Any]) {
     cometdClient.publish(message, channel: channel)
   }
   

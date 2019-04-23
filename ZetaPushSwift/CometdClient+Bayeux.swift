@@ -99,21 +99,21 @@ extension CometdClient {
         writeOperationQueue.sync { [unowned self] in
             let connTypes:NSArray = [BayeuxConnection.LongPolling.rawValue, BayeuxConnection.Callback.rawValue, BayeuxConnection.iFrame.rawValue, BayeuxConnection.WebSocket.rawValue]
             
-            var dict = [String: AnyObject]()
-            dict[Bayeux.Channel.rawValue] = BayeuxChannel.Handshake.rawValue as AnyObject?
-            dict[Bayeux.Version.rawValue] = "1.0" as AnyObject?
-            dict[Bayeux.MinimumVersion.rawValue] = "1.0" as AnyObject?
+            var dict = [String: Any]()
+            dict[Bayeux.Channel.rawValue] = BayeuxChannel.Handshake.rawValue
+            dict[Bayeux.Version.rawValue] = "1.0"
+            dict[Bayeux.MinimumVersion.rawValue] = "1.0"
             dict[Bayeux.SupportedConnectionTypes.rawValue] = connTypes
             
-            var ext = [String: AnyObject]()
-            ext["authentication"] = data as AnyObject?
+            var ext = [String: Any]()
+            ext["authentication"] = data
             
-            var advice = [String: AnyObject]()
-            advice["interval"] = 0 as AnyObject?
-            advice["timeout"] = 6000 as AnyObject?
+            var advice = [String: Any]()
+            advice["interval"] = 0
+            advice["timeout"] = 6000
             
-            dict["ext"] = ext as AnyObject?
-            dict["advice"] = advice as AnyObject?
+            dict["ext"] = ext
+            dict["advice"] = advice
             
             if let string = JSON(dict).rawString(String.Encoding.utf8, options: []) {
                 self.log.verbose("CometdClient handshake \(string)")
@@ -129,12 +129,12 @@ extension CometdClient {
     func connect() {
         writeOperationQueue.sync { [unowned self] in
             let messageId = self.nextMessageId()
-            let dict:[String:AnyObject] = [
-                Bayeux.Id.rawValue: messageId as AnyObject,
-                Bayeux.Channel.rawValue: BayeuxChannel.Connect.rawValue as AnyObject,
-                Bayeux.ClientId.rawValue: self.cometdClientId! as AnyObject,
-                Bayeux.ConnectionType.rawValue: BayeuxConnection.WebSocket.rawValue as AnyObject,
-                Bayeux.Advice.rawValue: ["timeout": self.timeOut] as AnyObject
+            let dict:[String: Any] = [
+                Bayeux.Id.rawValue: messageId,
+                Bayeux.Channel.rawValue: BayeuxChannel.Connect.rawValue,
+                Bayeux.ClientId.rawValue: self.cometdClientId!,
+                Bayeux.ConnectionType.rawValue: BayeuxConnection.WebSocket.rawValue,
+                Bayeux.Advice.rawValue: ["timeout": self.timeOut]
             ]
             
             if let string = JSON(dict).rawString(String.Encoding.utf8, options: []) {
@@ -151,10 +151,10 @@ extension CometdClient {
         guard let cometdClientId = self.cometdClientId, isConnected() else { return }
         writeOperationQueue.sync { [unowned self] in
             let messageId = self.nextMessageId()
-            let dict:[String:AnyObject] = [
-                Bayeux.Id.rawValue: messageId as AnyObject,
-                Bayeux.Channel.rawValue: BayeuxChannel.Disconnect.rawValue as AnyObject,
-                Bayeux.ClientId.rawValue: cometdClientId as AnyObject
+            let dict:[String: Any] = [
+                Bayeux.Id.rawValue: messageId,
+                Bayeux.Channel.rawValue: BayeuxChannel.Disconnect.rawValue,
+                Bayeux.ClientId.rawValue: cometdClientId
             ]
             if let string = JSON(dict).rawString(String.Encoding.utf8, options: []) {
                 self.log.verbose("CometdClient disconnect \(string)")
@@ -209,7 +209,7 @@ extension CometdClient {
     func unsubscribe(_ channel:String) {
         writeOperationQueue.sync { [unowned self] in
             if let clientId = self.cometdClientId {
-                let dict:[String:AnyObject] = [Bayeux.Channel.rawValue: BayeuxChannel.Unsubscibe.rawValue as AnyObject, Bayeux.ClientId.rawValue: clientId as AnyObject, Bayeux.Subscription.rawValue: channel as AnyObject]
+                let dict:[String: Any] = [Bayeux.Channel.rawValue: BayeuxChannel.Unsubscibe.rawValue, Bayeux.ClientId.rawValue: clientId, Bayeux.Subscription.rawValue: channel]
                 
                 if let string = JSON(dict).rawString(String.Encoding.utf8, options: []) {
                     self.log.verbose("CometdClient unsubscribe \(string)")
@@ -226,14 +226,14 @@ extension CometdClient {
     // "data": "some application string or JSON encoded object",
     // "id": "some unique message id"
     // }
-    func publish(_ data:[String:AnyObject], channel:String) {
+    func publish(_ data: [String: Any], channel: String) {
         writeOperationQueue.sync { [weak self] in
             if let clientId = self?.cometdClientId, let messageId = self?.nextMessageId(), self?.cometdConnected == true {
-                let dict:[String:AnyObject] = [
-                    Bayeux.Channel.rawValue: channel as AnyObject,
-                    Bayeux.ClientId.rawValue: clientId as AnyObject,
-                    Bayeux.Id.rawValue: messageId as AnyObject,
-                    Bayeux.Data.rawValue: data as AnyObject
+                let dict: [String: Any] = [
+                    Bayeux.Channel.rawValue: channel,
+                    Bayeux.ClientId.rawValue: clientId,
+                    Bayeux.Id.rawValue: messageId,
+                    Bayeux.Data.rawValue: data
                 ]
                 
                 if let string = JSON(dict).rawString(String.Encoding.utf8, options: []) {
