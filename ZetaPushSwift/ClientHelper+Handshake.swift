@@ -34,11 +34,12 @@ open class AbstractHandshake {
   
   // MARK: Methods
   func getHandshakeFields(_ client: ClientHelper) -> [String: Any] {
-    var auth = [String: Any]()
-    auth["type"] =  client.getSandboxId() + "." + deploymentId + "." + getAuthType()
-    auth["version"] = getAuthVersion()
-    auth["data"] = getAuthData()
-    auth["resource"] = client.getResource()
+    var auth: [String: Any] = [
+      "type": client.getSandboxId() + "." + deploymentId + "." + getAuthType(),
+      "version": getAuthVersion(),
+      "data": getAuthData(),
+      "resource": client.getResource()
+    ]
     return auth
   }
   
@@ -51,9 +52,7 @@ open class AbstractHandshake {
   }
   
   func getAuthData() -> [String: Any] {
-    var dict = [String: Any]()
-    dict["error"] = "method must be overridden"
-    return dict
+    fatalError("This method must be overridden")
   }
 }
 
@@ -69,9 +68,7 @@ open class TokenHandshake: AbstractHandshake {
   }
   
   override func getAuthData() -> [String: Any] {
-    var dict = [String: Any]()
-    dict["token"] = self.token
-    return dict
+    return ["token": token]
   }
 }
 
@@ -89,10 +86,10 @@ open class CredentialsHanshake: AbstractHandshake {
   }
   
   override func getAuthData() -> [String: Any] {
-    var dict = [String: Any]()
-    dict["login"] = login
-    dict["password"] = password
-    return dict
+    return [
+      "login": login,
+      "password": password
+    ]
   }
 }
 

@@ -96,30 +96,32 @@ extension CometdClient {
     // "minimumVersion": "1.0beta",
     // "supportedConnectionTypes": ["long-polling", "callback-polling", "iframe", "websocket]
     func handshake(_ data:[String: Any]) {
-        writeOperationQueue.sync { [unowned self] in
-            let connTypes:NSArray = [BayeuxConnection.LongPolling.rawValue, BayeuxConnection.Callback.rawValue, BayeuxConnection.iFrame.rawValue, BayeuxConnection.WebSocket.rawValue]
-            
-            var dict = [String: Any]()
-            dict[Bayeux.Channel.rawValue] = BayeuxChannel.Handshake.rawValue
-            dict[Bayeux.Version.rawValue] = "1.0"
-            dict[Bayeux.MinimumVersion.rawValue] = "1.0"
-            dict[Bayeux.SupportedConnectionTypes.rawValue] = connTypes
-            
-            var ext = [String: Any]()
-            ext["authentication"] = data
-            
-            var advice = [String: Any]()
-            advice["interval"] = 0
-            advice["timeout"] = 6000
-            
-            dict["ext"] = ext
-            dict["advice"] = advice
-            
-            if let string = JSON(dict).rawString(String.Encoding.utf8, options: []) {
-                self.log.verbose("CometdClient handshake \(string)")
-                self.transport?.writeString("["+string+"]")
-            }
+      writeOperationQueue.sync { [unowned self] in
+        let connTypes:NSArray = [BayeuxConnection.LongPolling.rawValue, BayeuxConnection.Callback.rawValue, BayeuxConnection.iFrame.rawValue, BayeuxConnection.WebSocket.rawValue]
+        
+        var dict: [String: Any] = [
+          Bayeux.Channel.rawValue: BayeuxChannel.Handshake.rawValue,
+          Bayeux.Version.rawValue: "1.0",
+          Bayeux.MinimumVersion.rawValue: "1.0",
+          Bayeux.SupportedConnectionTypes.rawValue: connTypes,
+        ]
+        
+        var ext: [String: Any] = [
+          "authentication": data
+        ]
+        var advice: [String: Any] = [
+          "interval": 0,
+          "timeout": 6000
+        ]
+        
+        dict["ext"] = ext
+        dict["advice"] = advice
+        
+        if let string = JSON(dict).rawString(String.Encoding.utf8, options: []) {
+          self.log.verbose("CometdClient handshake \(string)")
+          self.transport?.writeString("["+string+"]")
         }
+      }
     }
     
     // Bayeux Connect
@@ -129,7 +131,7 @@ extension CometdClient {
     func connect() {
         writeOperationQueue.sync { [unowned self] in
             let messageId = self.nextMessageId()
-            let dict:[String: Any] = [
+            let dict: [String: Any] = [
                 Bayeux.Id.rawValue: messageId,
                 Bayeux.Channel.rawValue: BayeuxChannel.Connect.rawValue,
                 Bayeux.ClientId.rawValue: self.cometdClientId!,
@@ -151,7 +153,7 @@ extension CometdClient {
         guard let cometdClientId = self.cometdClientId, isConnected() else { return }
         writeOperationQueue.sync { [unowned self] in
             let messageId = self.nextMessageId()
-            let dict:[String: Any] = [
+            let dict: [String: Any] = [
                 Bayeux.Id.rawValue: messageId,
                 Bayeux.Channel.rawValue: BayeuxChannel.Disconnect.rawValue,
                 Bayeux.ClientId.rawValue: cometdClientId
@@ -209,7 +211,11 @@ extension CometdClient {
     func unsubscribe(_ channel:String) {
         writeOperationQueue.sync { [unowned self] in
             if let clientId = self.cometdClientId {
-                let dict:[String: Any] = [Bayeux.Channel.rawValue: BayeuxChannel.Unsubscibe.rawValue, Bayeux.ClientId.rawValue: clientId, Bayeux.Subscription.rawValue: channel]
+                let dict: [String: Any] = [
+                  Bayeux.Channel.rawValue: BayeuxChannel.Unsubscibe.rawValue,
+                  Bayeux.ClientId.rawValue: clientId,
+                  Bayeux.Subscription.rawValue: channel
+              ]
                 
                 if let string = JSON(dict).rawString(String.Encoding.utf8, options: []) {
                     self.log.verbose("CometdClient unsubscribe \(string)")

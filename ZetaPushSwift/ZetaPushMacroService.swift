@@ -339,7 +339,7 @@ open class ZetaPushMacroService : NSObject {
   }
   
   open func call(verb: String) {
-    let dict:[String: Any] = [
+    let dict: [String: Any] = [
       "name": verb,
       "hardFail": true
     ]
