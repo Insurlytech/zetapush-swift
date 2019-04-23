@@ -87,13 +87,13 @@ public enum ZetaPushMacroError: Error {
 // MARK: - ZetaPushMacroService
 open class ZetaPushMacroService : NSObject {
   // MARK: Properties
-  open var onMacroError : ZPMacroServiceErrorBlock?
+  open var onMacroError: ZPMacroServiceErrorBlock?
   
-  public var clientHelper: ClientHelper?
-  var deploymentId: String?
-  var macroChannel: String?
-  var macroChannelError: String?
-  var macroChannelTrace: String?
+  public let clientHelper: ClientHelper
+  let deploymentId: String
+  private(set) var macroChannel: String!
+  private(set) var macroChannelError: String!
+  private(set) var macroChannelTrace: String!
   
   var channelSubscriptionBlocks = [String: [Subscription]]()
   
@@ -136,19 +136,16 @@ open class ZetaPushMacroService : NSObject {
     self.deploymentId = deploymentId
     super.init()
     
-    if let level = self.clientHelper?.getLogLevel() {
-      log.setup(level: level)
-    }
+    self.macroChannel = composeServiceChannel("completed")
+    self.macroChannelError = composeServiceChannel("error")
+    self.macroChannelTrace = composeServiceChannel("trace")
+    
+    log.setup(level: clientHelper.getLogLevel())
     
     // Subscribe to completed macro channel
-    self.macroChannel = composeServiceChannel("completed")
-    self.clientHelper?.subscribe(self.macroChannel!, block: channelBlockMacroCompleted)
-    
-    self.macroChannelError = composeServiceChannel("error")
-    self.clientHelper?.subscribe(self.macroChannelError!, block: channelBlockMacroError)
-    
-    self.macroChannelTrace = composeServiceChannel("trace")
-    self.clientHelper?.subscribe(self.macroChannelTrace!, block: channelBlockMacroTrace)
+    self.clientHelper.subscribe(self.macroChannel, block: channelBlockMacroCompleted)
+    self.clientHelper.subscribe(self.macroChannelError, block: channelBlockMacroError)
+    self.clientHelper.subscribe(self.macroChannelTrace, block: channelBlockMacroTrace)
   }
   
   public convenience init(_ clientHelper: ClientHelper) {
@@ -156,9 +153,6 @@ open class ZetaPushMacroService : NSObject {
   }
   
   private func composeServiceChannel(_ verb: String) -> String {
-    guard let clientHelper = self.clientHelper, let deploymentId = self.deploymentId else {
-      fatalError("init ZetaPushMacroService: clientHelper or deploymentId is nil")
-    }
     return "/service/" + clientHelper.getSandboxId() + "/" + deploymentId + "/" + verb
   }
   
@@ -193,7 +187,7 @@ open class ZetaPushMacroService : NSObject {
       "hardFail": true,
       "parameters": parameters
     ]
-    self.clientHelper?.publish(composeServiceChannel("call"), message: dict)
+    clientHelper.publish(composeServiceChannel("call"), message: dict)
   }
   
   /*
@@ -217,7 +211,7 @@ open class ZetaPushMacroService : NSObject {
         }
         
         guard let subscription = sub else { return }
-        self?.clientHelper?.unsubscribe(subscription)
+        self?.clientHelper.unsubscribe(subscription)
         
         if let result = messageDict["result"] as? NSDictionary {
           seal.fulfill(result)
@@ -228,8 +222,8 @@ open class ZetaPushMacroService : NSObject {
           seal.reject(ZetaPushMacroError.unknowError)
         }
       }
-      sub = self?.clientHelper?.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
-      self?.clientHelper?.publish(composeServiceChannel("call"), message: dict)
+      sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
+      self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
     }
   }
   
@@ -251,7 +245,7 @@ open class ZetaPushMacroService : NSObject {
         }
         
         guard let subscription = sub else { return }
-        self?.clientHelper?.unsubscribe(subscription)
+        self?.clientHelper.unsubscribe(subscription)
         
         if let result = messageDict["result"] as? NSDictionary {
           guard let json = result as? JSON, let zpMessage = U.resultType(json: json) else {
@@ -269,8 +263,8 @@ open class ZetaPushMacroService : NSObject {
         }
       }
       
-      sub = self?.clientHelper?.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
-      self?.clientHelper?.publish(composeServiceChannel("call"), message: dict)
+      sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
+      self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
     }
   }
   
@@ -291,7 +285,7 @@ open class ZetaPushMacroService : NSObject {
         }
         
         guard let subscription = sub else { return }
-        self?.clientHelper?.unsubscribe(subscription)
+        self?.clientHelper.unsubscribe(subscription)
         
         if let result = messageDict["result"] as? NSDictionary {
           guard let json = result as? JSON, let zpMessage = U.resultType(json: json) else {
@@ -309,8 +303,8 @@ open class ZetaPushMacroService : NSObject {
         }
       }
       
-      sub = self?.clientHelper?.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
-      self?.clientHelper?.publish(composeServiceChannel("call"), message: dict)
+      sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
+      self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
     }
   }
   
@@ -320,7 +314,7 @@ open class ZetaPushMacroService : NSObject {
       "hardFail": true,
       "parameters": parameters.toJSON()
     ]
-    clientHelper?.publish(composeServiceChannel("call"), message: dict)
+    clientHelper.publish(composeServiceChannel("call"), message: dict)
   }
   
   open func call(verb: String) {
@@ -328,6 +322,6 @@ open class ZetaPushMacroService : NSObject {
       "name": verb,
       "hardFail": true
     ]
-    clientHelper?.publish(composeServiceChannel("call"), message: dict)
+    clientHelper.publish(composeServiceChannel("call"), message: dict)
   }
 }

@@ -40,7 +40,7 @@ open class ZetaPushServiceListener{
     
     ///
     public func getModelBlock<T: Glossy>(verb: String, callback: @escaping (T) -> Void) -> ModelBlockTuple {
-        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId!)
+        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId)
         let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: self.clientHelper.cometdClient.cometdClientId)
         return ModelBlockTuple(model: model, block: {(messageDict: NSDictionary) -> Void in
             guard let zpMessage: T = self.parse(messageDict: messageDict) else {
@@ -53,7 +53,7 @@ open class ZetaPushServiceListener{
     
     ///
     public func getModelBlock<T: Glossy>(verb: String, callback: @escaping ([T]) -> Void) -> ModelBlockTuple {
-        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId!)
+        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId)
         let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: self.clientHelper.cometdClient.cometdClientId)
         return ModelBlockTuple(model: model, block: { (messageDict: NSDictionary) -> Void in
             guard let zpMessage: [T] = self.parse(messageDict: messageDict) else {
@@ -66,7 +66,7 @@ open class ZetaPushServiceListener{
     
     ///
     public func getModelBlock<T: NSDictionary>(verb: String, callback: @escaping (T) -> Void) -> ModelBlockTuple {
-        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId!)
+        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId)
         let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: self.clientHelper.cometdClient.cometdClientId)
         return ModelBlockTuple(model: model, block: { (messageDict: NSDictionary) -> Void in
             guard let zpMessage: T = self.parse(messageDict: messageDict) else {
@@ -93,7 +93,7 @@ open class ZetaPushServiceListener{
             }
             callback(zpMessage)
         }
-        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId!)
+        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId)
         self.clientHelper.subscribe(channel, block: channelBlockServiceCall)
     }
 
@@ -108,7 +108,7 @@ open class ZetaPushServiceListener{
             }
             callback(zpMessage)
         }
-        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId!)
+        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId)
         self.clientHelper.subscribe(channel, block: channelBlockServiceCall)
     }
 
@@ -121,7 +121,7 @@ open class ZetaPushServiceListener{
             }
             callback(zpMessage)
         }
-        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId!)
+        let channel: String = self.clientHelper.composeServiceChannel(verb, deploymentId: self.zetaPushService.deploymentId)
         self.clientHelper.subscribe(channel, block: channelBlockServiceCall)
     }
     
