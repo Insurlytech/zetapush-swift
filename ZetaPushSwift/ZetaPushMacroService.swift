@@ -95,7 +95,7 @@ open class ZetaPushMacroService : NSObject {
   var macroChannelError: String?
   var macroChannelTrace: String?
   
-  var channelSubscriptionBlocks = Dictionary<String, Array<Subscription>>()
+  var channelSubscriptionBlocks = [String: [Subscription]]()
   
   let log = XCGLogger(identifier: "macroserviceLogger", includeDefaultDestinations: true)
   

@@ -27,7 +27,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   
   var firstHandshakeFlag = true
   
-  var subscriptionQueue = Array<Subscription>()
+  var subscriptionQueue = [Subscription]()
   // Flag used for automatic reconnection
   var wasConnected = false
   // Delay in s before automatic reconnection
