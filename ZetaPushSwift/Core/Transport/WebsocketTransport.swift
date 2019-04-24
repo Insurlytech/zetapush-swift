@@ -1,9 +1,9 @@
 //
 //  WebsocketTransport.swift
-//  ZetaPushSwift
+//  ZetaPush
 //
-//  Created by Morvan Mikaël on 23/03/2017.
-//  Copyright © 2017 ZetaPush. All rights reserved.
+//  Created by Leocare on 19/04/2019.
+//  Copyright © 2019 Leocare. All rights reserved.
 //
 // Adapted from https://github.com/hamin/FayeSwift
 
@@ -11,23 +11,28 @@ import Foundation
 import Starscream
 import XCGLogger
 
-internal class WebsocketTransport: Transport {
-  
-  var urlString: String?
+// MARK: - WebsocketTransport
+class WebsocketTransport: Transport {
+  // MARK: Properties
+  var urlString: String
   var webSocket: WebSocket?
-  internal weak var delegate: TransportDelegate?
+  weak var delegate: TransportDelegate?
   
   let log = XCGLogger(identifier: "websocketLogger", includeDefaultDestinations: true)
   
-  convenience required internal init(url: String, logLevel: XCGLogger.Level = .severe) {
-    self.init()
+  // MARK: Init
+  init(url: String, logLevel: XCGLogger.Level = .severe) {
     self.urlString = url
     log.setup(level: logLevel)
   }
   
   func openConnection() {
     self.closeConnection()
-    self.webSocket = WebSocket(url: URL(string:self.urlString!)!)
+    
+    guard let url = URL(string: urlString) else {
+      fatalError("WebSocket url isn't conform")
+    }
+    self.webSocket = WebSocket(url: url)
     if let webSocket = self.webSocket {
       webSocket.advancedDelegate = self
       webSocket.pongDelegate = self
@@ -40,31 +45,29 @@ internal class WebsocketTransport: Transport {
   func closeConnection() {
     log.error("Cometd: close connection")
     if let webSocket = self.webSocket {
-      
       webSocket.delegate = nil
       webSocket.disconnect(forceTimeout: 0)
-      
       self.webSocket = nil
     }
   }
   
-  func writeString(_ aString:String) {
+  func writeString(_ aString: String) {
     log.debug("Cometd: aString : \(aString)")
     self.webSocket?.write(string: aString)
   }
   
-  func sendPing(_ data: Data, completion: (() -> ())? = nil) {
+  func sendPing(_ data: Data, completion: (() -> Void)? = nil) {
     self.webSocket?.write(ping: data, completion: completion)
   }
   
-  func isConnected() -> (Bool) {
+  func isConnected() -> Bool {
     return self.webSocket?.isConnected ?? false
   }
 }
 
+// MARK: - WebsocketTransport + WebSocketPongDelegate
 extension WebsocketTransport: WebSocketPongDelegate {
-  // MARK: WebSocket Pong Delegate
-  internal func websocketDidReceivePong(_ socket: WebSocketClient) {
+  func websocketDidReceivePong(_ socket: WebSocketClient) {
     self.delegate?.didReceivePong()
   }
   
@@ -73,6 +76,7 @@ extension WebsocketTransport: WebSocketPongDelegate {
   }
 }
 
+// MARK: - WebsocketTransport + WebSocketAdvancedDelegate
 extension WebsocketTransport: WebSocketAdvancedDelegate {
   func websocketDidConnect(socket: WebSocket) {
     log.debug("Advanced transport delegate : connection did connect")
@@ -106,4 +110,3 @@ extension WebsocketTransport: WebSocketAdvancedDelegate {
     log.debug("Advanced transport delegate: uprage http with socket: \(socket) from response : \(response)")
   }
 }
-
