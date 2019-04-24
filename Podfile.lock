@@ -1,30 +1,30 @@
 PODS:
-  - Gloss (2.1.0)
+  - Gloss (2.1.1)
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
-  - PromiseKit (6.8.3):
-    - PromiseKit/CorePromise (= 6.8.3)
-    - PromiseKit/Foundation (= 6.8.3)
-    - PromiseKit/UIKit (= 6.8.3)
-  - PromiseKit/CorePromise (6.8.3)
-  - PromiseKit/Foundation (6.8.3):
+  - PromiseKit (6.8.4):
+    - PromiseKit/CorePromise (= 6.8.4)
+    - PromiseKit/Foundation (= 6.8.4)
+    - PromiseKit/UIKit (= 6.8.4)
+  - PromiseKit/CorePromise (6.8.4)
+  - PromiseKit/Foundation (6.8.4):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.8.3):
+  - PromiseKit/UIKit (6.8.4):
     - PromiseKit/CorePromise
-  - Starscream (3.0.6)
-  - SwiftyJSON (4.2.0)
-  - XCGLogger (6.1.0):
-    - XCGLogger/Core (= 6.1.0)
-  - XCGLogger/Core (6.1.0):
+  - Starscream (3.1.0)
+  - SwiftyJSON (4.3.0)
+  - XCGLogger (7.0.0):
+    - XCGLogger/Core (= 7.0.0)
+  - XCGLogger/Core (7.0.0):
     - ObjcExceptionBridging
 
 DEPENDENCIES:
   - Gloss (~> 2.1)
   - PromiseKit (~> 6.8)
-  - Starscream (= 3.0.6)
-  - SwiftyJSON (~> 4.2)
-  - XCGLogger (~> 6.1)
+  - Starscream (= 3.1.0)
+  - SwiftyJSON (~> 4.0)
+  - XCGLogger (~> 7.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -36,13 +36,13 @@ SPEC REPOS:
     - XCGLogger
 
 SPEC CHECKSUMS:
-  Gloss: 13ab6b4b0ff4cb2448466edc957479b1bccea8ba
+  Gloss: 9df15229b2f6484c14752a738474fd2528b4c5cd
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
-  PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
-  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
-  SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
-  XCGLogger: 7f7f43f15dfe3a305fa1342b7dc29af656289abd
+  PromiseKit: 51794a832647e7b819336dc2279039ce9f1cc49b
+  Starscream: 08172b481e145289c4930cb567230fb55897cfa4
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
+  XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: 6e8ac7d9bf5357b16ec71f69426cb7a0ae5414e9
+PODFILE CHECKSUM: 43a9f578ef9fd690a0f2975b3ee6fa200f418b2f
 
 COCOAPODS: 1.7.0.beta.3

@@ -180,7 +180,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   open func unsubscribe(_ subscription: Subscription) {
     log.zp.debug("ClientHelper unsubscribe")
     cometdClient.unsubscribeFromChannel(subscription)
-    if let index = subscriptionQueue.index(of: subscription){
+    if let index = subscriptionQueue.firstIndex(of: subscription){
       subscriptionQueue.remove(at: index)
     }
   }

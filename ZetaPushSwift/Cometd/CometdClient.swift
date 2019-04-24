@@ -223,7 +223,7 @@ open class CometdClient: TransportDelegate {
     removeChannelFromQueuedSubscriptions(subscription.channel)
     
     var subscriptionArray = self.channelSubscriptionBlocks[subscription.channel]
-    if let index = subscriptionArray?.index(of: subscription) {
+    if let index = subscriptionArray?.firstIndex(of: subscription) {
       subscriptionArray?.remove(at: index)
     }
     if subscriptionArray?.count == 0 {

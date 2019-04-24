@@ -29,7 +29,7 @@ open class CometdSubscriptionModel {
   open var clientId: String?
   
   // Id of the subscribtion
-  open var id: Int?
+  open var id: Int
   
   /// Model must conform to Hashable
   open var hashValue: Int {
