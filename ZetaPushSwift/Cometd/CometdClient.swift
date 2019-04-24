@@ -58,7 +58,6 @@ public struct Subscription: Equatable {
 // MARK: - CometdClient
 open class CometdClient: TransportDelegate {
   // MARK: Properties
-  open var cometdURLString: String!
   open var handshakeFields: [String: Any]?
   open var cometdClientId: String?
   
@@ -119,15 +118,16 @@ open class CometdClient: TransportDelegate {
     let port = rawUrl?.port
     let scheme = forceSecure ? "wss://" : "ws://"
     
+    let cometdURLString: String
     if let port = port {
-      self.cometdURLString = scheme + host + ":" + String(port) + path
+      cometdURLString = scheme + host + ":" + String(port) + path
     } else {
-      self.cometdURLString = scheme + host + path
+      cometdURLString = scheme + host + path
     }
     
     self.cometdConnected = false
     
-    self.transport = WebsocketTransport(url: self.cometdURLString, logLevel: self.logLevel)
+    self.transport = WebsocketTransport(url: cometdURLString, logLevel: self.logLevel)
     self.transport?.delegate = self
   }
   
