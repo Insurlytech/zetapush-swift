@@ -91,9 +91,6 @@ open class ZetaPushMacroService : NSObject {
   
   public let clientHelper: ClientHelper
   let deploymentId: String
-  private(set) var macroChannel: String!
-  private(set) var macroChannelError: String!
-  private(set) var macroChannelTrace: String!
   
   var channelSubscriptionBlocks = [String: [Subscription]]()
   
@@ -136,16 +133,16 @@ open class ZetaPushMacroService : NSObject {
     self.deploymentId = deploymentId
     super.init()
     
-    self.macroChannel = composeServiceChannel("completed")
-    self.macroChannelError = composeServiceChannel("error")
-    self.macroChannelTrace = composeServiceChannel("trace")
+    let macroChannel = composeServiceChannel("completed")
+    let macroChannelError = composeServiceChannel("error")
+    let macroChannelTrace = composeServiceChannel("trace")
     
     log.setup(level: clientHelper.getLogLevel())
     
     // Subscribe to completed macro channel
-    self.clientHelper.subscribe(self.macroChannel, block: channelBlockMacroCompleted)
-    self.clientHelper.subscribe(self.macroChannelError, block: channelBlockMacroError)
-    self.clientHelper.subscribe(self.macroChannelTrace, block: channelBlockMacroTrace)
+    self.clientHelper.subscribe(macroChannel, block: channelBlockMacroCompleted)
+    self.clientHelper.subscribe(macroChannelError, block: channelBlockMacroError)
+    self.clientHelper.subscribe(macroChannelTrace, block: channelBlockMacroTrace)
   }
   
   public convenience init(_ clientHelper: ClientHelper) {
@@ -210,7 +207,10 @@ open class ZetaPushMacroService : NSObject {
           return
         }
         
-        guard let subscription = sub else { return }
+        guard let subscription = sub else {
+          self?.log.zp.debug(#function + "subscription is nil")
+          return
+        }
         self?.clientHelper.unsubscribe(subscription)
         
         if let result = messageDict["result"] as? NSDictionary {
@@ -244,7 +244,10 @@ open class ZetaPushMacroService : NSObject {
           return
         }
         
-        guard let subscription = sub else { return }
+        guard let subscription = sub else {
+          self?.log.zp.debug(#function + "subscription is nil")
+          return
+        }
         self?.clientHelper.unsubscribe(subscription)
         
         if let result = messageDict["result"] as? NSDictionary {
@@ -284,7 +287,10 @@ open class ZetaPushMacroService : NSObject {
           return
         }
         
-        guard let subscription = sub else { return }
+        guard let subscription = sub else {
+          self?.log.zp.debug(#function + "subscription is nil")
+          return
+        }
         self?.clientHelper.unsubscribe(subscription)
         
         if let result = messageDict["result"] as? NSDictionary {
