@@ -111,7 +111,7 @@ open class ZetaPushService: NSObject {
         self?.clientHelper.unsubscribe(sub)
         self?.clientHelper.unsubscribe(subError)
         
-        guard let zpMessage = U(json: messageDict as! JSON) else {
+        guard let json = messageDict as? JSON, let zpMessage = U(json: json) else {
           seal.reject(ZetaPushServiceError.decodingError)
           return
         }

@@ -35,7 +35,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   
   var logLevel: XCGLogger.Level = .severe
   
-  fileprivate var authentication: AbstractHandshake?
+  fileprivate var authentication: AbstractHandshake
   let cometdClient: CometdClient
   
   open weak var delegate:ClientHelperDelegate?
@@ -145,10 +145,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   
   private func configureCometdClient() {
     cometdClient.configure(url: server)
-    guard let handshakeFields = authentication?.getHandshakeFields(self) else {
-      log.zp.error("configureCometdClient: handshakeFields is nil")
-      return
-    }
+    let handshakeFields = authentication.getHandshakeFields(self)
     cometdClient.connectHandshake(handshakeFields)
   }
   
@@ -225,7 +222,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   }
   
   open func getHandshakeFields() -> [String: Any] {
-    return authentication!.getHandshakeFields(self)
+    return authentication.getHandshakeFields(self)
   }
   
   open func getResource() -> String {
