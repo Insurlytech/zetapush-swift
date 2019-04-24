@@ -44,3 +44,4 @@ public extension ZetaPushProxyCompatible {
 // All conformance here that your proxy will be available for
 // and add conformance every time we implement our Proxy on new Type
 extension XCGLogger: ZetaPushProxyCompatible { }
+extension String: ZetaPushProxyCompatible { }
