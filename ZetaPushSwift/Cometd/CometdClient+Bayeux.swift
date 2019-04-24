@@ -129,11 +129,12 @@ extension CometdClient {
   // "connectionType": "long-polling"
   func connect() {
     writeOperationQueue.sync { [unowned self] in
+      guard let cometdClientId = self.cometdClientId else { return }
       let messageId = self.nextMessageId()
       let dict: [String: Any] = [
         Bayeux.Id.rawValue: messageId,
         Bayeux.Channel.rawValue: BayeuxChannel.Connect.rawValue,
-        Bayeux.ClientId.rawValue: self.cometdClientId!,
+        Bayeux.ClientId.rawValue: cometdClientId,
         Bayeux.ConnectionType.rawValue: BayeuxConnection.WebSocket.rawValue,
         Bayeux.Advice.rawValue: ["timeout": self.timeOut]
       ]
