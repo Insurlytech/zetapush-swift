@@ -46,7 +46,8 @@ open class ZetaPushServiceListener {
   public func getModelBlock<T: Glossy>(verb: String, callback: @escaping (T) -> Void) -> ModelBlockTuple {
     let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
     let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: clientHelper.cometdClient.cometdClientId)
-    return ModelBlockTuple(model: model, block: { (messageDict: NSDictionary) -> Void in
+    return ModelBlockTuple(model: model, block: { [weak self] (messageDict: NSDictionary) -> Void in
+      guard let self = self else { return }
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
         self.onServiceError?(self.zetaPushService, ZetaPushServiceError.decodingError)
         return
@@ -59,7 +60,8 @@ open class ZetaPushServiceListener {
   public func getModelBlock<T: Glossy>(verb: String, callback: @escaping ([T]) -> Void) -> ModelBlockTuple {
     let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
     let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: clientHelper.cometdClient.cometdClientId)
-    return ModelBlockTuple(model: model, block: { (messageDict: NSDictionary) -> Void in
+    return ModelBlockTuple(model: model, block: { [weak self] (messageDict: NSDictionary) -> Void in
+      guard let self = self else { return }
       guard let zpMessage: [T] = self.parse(messageDict: messageDict) else {
         self.onServiceError?(self.zetaPushService, ZetaPushServiceError.decodingError)
         return
@@ -72,7 +74,8 @@ open class ZetaPushServiceListener {
   public func getModelBlock<T: NSDictionary>(verb: String, callback: @escaping (T) -> Void) -> ModelBlockTuple {
     let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
     let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: self.clientHelper.cometdClient.cometdClientId)
-    return ModelBlockTuple(model: model, block: { (messageDict: NSDictionary) -> Void in
+    return ModelBlockTuple(model: model, block: { [weak self] (messageDict: NSDictionary) -> Void in
+      guard let self = self else { return }
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
         self.onServiceError?(self.zetaPushService, ZetaPushServiceError.decodingError)
         return
@@ -88,7 +91,8 @@ open class ZetaPushServiceListener {
   
   /// Generic Subscribe with a Generic parameter
   public func subscribe<T: Glossy>(verb: String, callback: @escaping (T) -> Void) {
-    let channelBlockServiceCall: ChannelSubscriptionBlock =  { (messageDict) -> Void in
+    let channelBlockServiceCall: ChannelSubscriptionBlock =  { [weak self] (messageDict) -> Void in
+      guard let self = self else { return }
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
         self.onServiceError?(self.zetaPushService, ZetaPushServiceError.decodingError)
         return
@@ -101,8 +105,8 @@ open class ZetaPushServiceListener {
   
   /// Generic Subscribe with a Generic Array parameter
   public func subscribe<T: Glossy>(verb: String, callback: @escaping ([T]) -> Void) {
-    let channelBlockServiceCall: ChannelSubscriptionBlock = { (messageDict) -> Void in
-      
+    let channelBlockServiceCall: ChannelSubscriptionBlock = { [weak self] (messageDict) -> Void in
+      guard let self = self else { return }
       guard let zpMessage: [T] = self.parse(messageDict: messageDict) else {
         self.onServiceError?(self.zetaPushService, ZetaPushServiceError.decodingError)
         return
@@ -115,7 +119,8 @@ open class ZetaPushServiceListener {
   
   /// Generic Subscribe with a NSDictionary parameter
   public func subscribe<T: NSDictionary>(verb: String, callback: @escaping (T) -> Void) {
-    let channelBlockServiceCall: ChannelSubscriptionBlock = { (messageDict) -> Void in
+    let channelBlockServiceCall: ChannelSubscriptionBlock = { [weak self] (messageDict) -> Void in
+      guard let self = self else { return }
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
         self.onServiceError?(self.zetaPushService, ZetaPushServiceError.decodingError)
         return
