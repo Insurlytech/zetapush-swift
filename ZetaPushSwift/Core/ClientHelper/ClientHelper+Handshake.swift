@@ -34,7 +34,7 @@ open class AbstractHandshake {
   
   // MARK: Methods
   func getHandshakeFields(_ client: ClientHelper) -> [String: Any] {
-    var auth: [String: Any] = [
+    let auth: [String: Any] = [
       "type": client.getSandboxId() + "." + deploymentId + "." + getAuthType(),
       "version": getAuthVersion(),
       "data": getAuthData(),

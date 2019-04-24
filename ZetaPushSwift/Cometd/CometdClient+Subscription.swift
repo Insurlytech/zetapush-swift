@@ -28,7 +28,7 @@ extension CometdClient {
   
   func unsubscribeAllSubscriptions() {
     let subscriptionsModels = queuedSubscriptions + openSubscriptions + pendingSubscriptions
-    let subscriptions = subscriptionsModels.compactMap({ $0.id != nil ? Subscription(callback: nil, channel: $0.subscriptionUrl, id: $0.id!) : nil })
+    let subscriptions = subscriptionsModels.compactMap({ Subscription(callback: nil, channel: $0.subscriptionUrl, id: $0.id) })
     subscriptions.forEach({ clearSubscriptionFromChannel($0) })
   }
   
@@ -68,7 +68,7 @@ extension CometdClient {
     objc_sync_enter(self.queuedSubscriptions)
     defer { objc_sync_exit(self.queuedSubscriptions) }
     
-    let index = self.queuedSubscriptions.index { $0.subscriptionUrl == channel }
+    let index = self.queuedSubscriptions.firstIndex { $0.subscriptionUrl == channel }
     
     if let index = index {
       self.queuedSubscriptions.remove(at: index)
@@ -82,7 +82,7 @@ extension CometdClient {
     objc_sync_enter(self.pendingSubscriptions)
     defer { objc_sync_exit(self.pendingSubscriptions) }
     
-    let index = self.pendingSubscriptions.index { $0.subscriptionUrl == channel }
+    let index = self.pendingSubscriptions.firstIndex { $0.subscriptionUrl == channel }
     
     if let index = index {
       self.pendingSubscriptions.remove(at: index)
@@ -96,7 +96,7 @@ extension CometdClient {
     objc_sync_enter(self.pendingSubscriptions)
     defer { objc_sync_exit(self.pendingSubscriptions) }
     
-    let index = self.openSubscriptions.index { $0.subscriptionUrl == channel }
+    let index = self.openSubscriptions.firstIndex { $0.subscriptionUrl == channel }
     
     if let index = index {
       self.openSubscriptions.remove(at: index)
