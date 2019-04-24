@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8A2922FA0830C9E8F8135C5A /* Pods_ZetaPushSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1749803BD13F37ED0A8AEB45 /* Pods_ZetaPushSwift.framework */; };
 		C5896E291E84121A0037800F /* ZetaPushSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = C5896E271E84121A0037800F /* ZetaPushSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FFB7C3DE227039BF0031F6EF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFB7C3DD227039BF0031F6EF /* Info.plist */; };
 		FFDFE3D122703AE800DEFD9C /* CometdClientDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDFE3B022703AE800DEFD9C /* CometdClientDelegate.swift */; };
 		FFDFE3D222703AE800DEFD9C /* CometdClient+Transport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDFE3B122703AE800DEFD9C /* CometdClient+Transport.swift */; };
 		FFDFE3D322703AE800DEFD9C /* CometdSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDFE3B222703AE800DEFD9C /* CometdSocketError.swift */; };
@@ -47,7 +46,7 @@
 		C5896E241E84121A0037800F /* ZetaPushSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZetaPushSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5896E271E84121A0037800F /* ZetaPushSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZetaPushSwift.h; sourceTree = "<group>"; };
 		E327A1F3727E6CF61C97EADC /* Pods-ZetaPushSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZetaPushSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZetaPushSwift/Pods-ZetaPushSwift.debug.xcconfig"; sourceTree = "<group>"; };
-		FFB7C3DD227039BF0031F6EF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FF29DE4C22705F06008EFD2D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FFDFE3B022703AE800DEFD9C /* CometdClientDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CometdClientDelegate.swift; sourceTree = "<group>"; };
 		FFDFE3B122703AE800DEFD9C /* CometdClient+Transport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CometdClient+Transport.swift"; sourceTree = "<group>"; };
 		FFDFE3B222703AE800DEFD9C /* CometdSocketError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CometdSocketError.swift; sourceTree = "<group>"; };
@@ -140,7 +139,7 @@
 		FFB7C3DC227039BF0031F6EF /* Ressources */ = {
 			isa = PBXGroup;
 			children = (
-				FFB7C3DD227039BF0031F6EF /* Info.plist */,
+				FF29DE4C22705F06008EFD2D /* Info.plist */,
 			);
 			path = Ressources;
 			sourceTree = "<group>";
@@ -284,7 +283,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFB7C3DE227039BF0031F6EF /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,7 +477,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZetaPushSwift/Info.plist;
+				INFOPLIST_FILE = ZetaPushSwift/Ressources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zetapush.ZetaPushSwift;
@@ -501,7 +499,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = ZetaPushSwift/Info.plist;
+				INFOPLIST_FILE = ZetaPushSwift/Ressources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zetapush.ZetaPushSwift;
