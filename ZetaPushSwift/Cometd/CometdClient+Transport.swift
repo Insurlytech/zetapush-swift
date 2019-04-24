@@ -14,7 +14,11 @@ extension CometdClient {
   public func didConnect() {
     self.connectionInitiated = false
     log.debug("CometdClient didConnect")
-    self.handshake(self.handshakeFields!)
+    guard let handshakeFields = self.handshakeFields else {
+      log.zp.debug(#function + "handshakeFields is nil")
+      return
+    }
+    self.handshake(handshakeFields)
   }
   
   public func didDisconnect(_ error: Error?) {

@@ -54,7 +54,7 @@ extension CometdClient {
   func nextMessageId() -> String {
     self.messageNumber += 1
     
-    if self.messageNumber >= UINT32_MAX {
+    if self.messageNumber >= UInt32.max {
       messageNumber = 0
     }
     
