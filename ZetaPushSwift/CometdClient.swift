@@ -77,11 +77,11 @@ open class CometdClient : TransportDelegate {
     
     var logLevel: XCGLogger.Level = .severe
     
-    var queuedSubscriptions = Array<CometdSubscriptionModel>()
-    var pendingSubscriptions = Array<CometdSubscriptionModel>()
-    var openSubscriptions = Array<CometdSubscriptionModel>()
+    var queuedSubscriptions = [CometdSubscriptionModel]()
+    var pendingSubscriptions = [CometdSubscriptionModel]()
+    var openSubscriptions = [CometdSubscriptionModel]()
     
-    var channelSubscriptionBlocks = Dictionary<String, Array<Subscription>>()
+  var channelSubscriptionBlocks = [String: [Subscription]]()
     
     lazy var pendingSubscriptionSchedule: Timer = {
         return Timer.scheduledTimer(

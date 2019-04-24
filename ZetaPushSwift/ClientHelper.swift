@@ -27,7 +27,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   
   var firstHandshakeFlag = true
   
-  var subscriptionQueue = Array<Subscription>()
+  var subscriptionQueue = [Subscription]()
   // Flag used for automatic reconnection
   var wasConnected = false
   // Delay in s before automatic reconnection
@@ -176,7 +176,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     return sub
   }
   
-  open func publish(_ channel: String, message: [String: AnyObject]) {
+  open func publish(_ channel: String, message: [String: Any]) {
     cometdClient.publish(message, channel: channel)
   }
   

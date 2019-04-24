@@ -15,7 +15,7 @@ import Gloss
  */
 open class ZetaPushMacroPublisher{
     
-    public var clientHelper: ClientHelper?
+    public let clientHelper: ClientHelper
     public var zetaPushMacroService: ZetaPushMacroService
     
     public init(_ clientHelper: ClientHelper, deploymentId: String){
