@@ -69,6 +69,7 @@ public enum ZetaPushMacroError: Error {
   case genericError(macroName: String, errorMessage: String, errorCode: String, errorLocation: String)
   case unknowError
   case decodingError
+  case timeout
   
   static func genericFromDictionnary(_ messageDict: NSDictionary) -> ZetaPushMacroError {
     guard let errorCode = messageDict["code"] as? String, let errorMessage = messageDict["message"] as? String else {
@@ -94,6 +95,8 @@ open class ZetaPushMacroService : NSObject {
   
   var channelSubscriptionBlocks = [String: [Subscription]]()
   
+  let timeInterval: TimeInterval = 30
+
   let log = XCGLogger(identifier: "macroserviceLogger", includeDefaultDestinations: true)
   
   // Callback for /completed macro channel
@@ -224,7 +227,7 @@ open class ZetaPushMacroService : NSObject {
       }
       sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
       self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
-    }
+    }.timeout(after: timeInterval)
   }
   
   open func call<T : Glossy, U: AbstractMacroCompletion>(verb: String, parameters: T) -> Promise<U> {
@@ -268,7 +271,7 @@ open class ZetaPushMacroService : NSObject {
       
       sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
       self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
-    }
+    }.timeout(after: timeInterval)
   }
   
   open func call<U: AbstractMacroCompletion>(verb: String) -> Promise<U> {
@@ -311,7 +314,7 @@ open class ZetaPushMacroService : NSObject {
       
       sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
       self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
-    }
+    }.timeout(after: timeInterval)
   }
   
   open func call<T: Glossy>(verb: String, parameters: T) {
