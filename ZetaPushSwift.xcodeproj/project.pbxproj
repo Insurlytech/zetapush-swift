@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8A2922FA0830C9E8F8135C5A /* Pods_ZetaPushSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1749803BD13F37ED0A8AEB45 /* Pods_ZetaPushSwift.framework */; };
 		C5896E291E84121A0037800F /* ZetaPushSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = C5896E271E84121A0037800F /* ZetaPushSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FF29DE4F2270875B008EFD2D /* Promise+Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF29DE4E2270875B008EFD2D /* Promise+Timeout.swift */; };
 		FFDFE3D122703AE800DEFD9C /* CometdClientDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDFE3B022703AE800DEFD9C /* CometdClientDelegate.swift */; };
 		FFDFE3D222703AE800DEFD9C /* CometdClient+Transport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDFE3B122703AE800DEFD9C /* CometdClient+Transport.swift */; };
 		FFDFE3D322703AE800DEFD9C /* CometdSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDFE3B222703AE800DEFD9C /* CometdSocketError.swift */; };
@@ -47,6 +48,7 @@
 		C5896E271E84121A0037800F /* ZetaPushSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZetaPushSwift.h; sourceTree = "<group>"; };
 		E327A1F3727E6CF61C97EADC /* Pods-ZetaPushSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZetaPushSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZetaPushSwift/Pods-ZetaPushSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		FF29DE4C22705F06008EFD2D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FF29DE4E2270875B008EFD2D /* Promise+Timeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Promise+Timeout.swift"; sourceTree = "<group>"; };
 		FFDFE3B022703AE800DEFD9C /* CometdClientDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CometdClientDelegate.swift; sourceTree = "<group>"; };
 		FFDFE3B122703AE800DEFD9C /* CometdClient+Transport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CometdClient+Transport.swift"; sourceTree = "<group>"; };
 		FFDFE3B222703AE800DEFD9C /* CometdSocketError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CometdSocketError.swift; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				FFDFE3C722703AE800DEFD9C /* String+Encode.swift */,
 				FFDFE3C822703AE800DEFD9C /* ZetaPushProxy.swift */,
 				FFDFE3C922703AE800DEFD9C /* Logger+tags.swift */,
+				FF29DE4E2270875B008EFD2D /* Promise+Timeout.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFDFE3DE22703AE800DEFD9C /* ClientHelper+Handshake.swift in Sources */,
+				FF29DE4F2270875B008EFD2D /* Promise+Timeout.swift in Sources */,
 				FFDFE3EA22703AE800DEFD9C /* ZetaPushService.swift in Sources */,
 				FFDFE3E722703AE800DEFD9C /* ZetaPushClient.swift in Sources */,
 				FFDFE3DA22703AE800DEFD9C /* CometdSubscriptionModel.swift in Sources */,
