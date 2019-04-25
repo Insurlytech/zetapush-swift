@@ -57,7 +57,7 @@ Pods/
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 # Carthage/Checkouts
 
-Carthage/Build
+#Carthage/Build
 
 # fastlane
 #
@@ -71,4 +71,3 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 
-pod-howto
