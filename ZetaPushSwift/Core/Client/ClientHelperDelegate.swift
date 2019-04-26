@@ -21,7 +21,6 @@ public protocol ClientHelperDelegate: class {
   func onSubscriptionFailedWithError(_ client: ClientHelper, error: subscriptionError)
 }
 
-
 public extension ClientHelperDelegate {
   func onConnectionEstablished(_ client: ClientHelper) { }
   func onConnectionBroken(_ client: ClientHelper) { }
@@ -33,4 +32,3 @@ public extension ClientHelperDelegate {
   func onDidUnsubscribeFromChannel(_ client: ClientHelper, channel: String) { }
   func onSubscriptionFailedWithError(_ client: ClientHelper, error: subscriptionError) { }
 }
-

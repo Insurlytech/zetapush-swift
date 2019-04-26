@@ -20,7 +20,9 @@ open class ZetaPushMacroListener {
   public init(_ clientHelper: ClientHelper, deploymentId: String) {
     self.clientHelper = clientHelper
     self.zetaPushMacroService = ZetaPushMacroService(clientHelper, deploymentId: deploymentId)
-    self.register()
+    
+    // TODO: refact register https://github.com/Insurlytech/zetapush-swift/issues/16
+//    self.register()
   }
   
   /// Must be overriden by descendants

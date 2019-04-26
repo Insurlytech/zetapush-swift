@@ -39,7 +39,8 @@ open class ZetaPushServiceListener {
     self.macroChannelError = "/service/" + self.clientHelper.getSandboxId() + "/" + deploymentId + "/" + "error"
     self.clientHelper.subscribe(macroChannelError, block: channelBlockMacroError)
     
-    self.register()
+    // TODO: refact register https://github.com/Insurlytech/zetapush-swift/issues/16
+//    self.register()
   }
   
   ///
