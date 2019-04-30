@@ -227,7 +227,7 @@ open class ZetaPushMacroService : NSObject {
       }
       sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
       self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
-    }.timeout(after: timeInterval)
+    }.timeout(after: timeInterval).retry(times: 3, cooldown: 10)
   }
   
   open func call<T : Glossy, U: AbstractMacroCompletion>(verb: String, parameters: T) -> Promise<U> {
