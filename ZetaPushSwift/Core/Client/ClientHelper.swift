@@ -35,7 +35,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   
   var logLevel: XCGLogger.Level = .severe
   
-  fileprivate var authentication: AbstractHandshake
+  private(set) var authentication: AbstractHandshake
   let cometdClient: CometdClient
   
   open weak var delegate:ClientHelperDelegate?
@@ -146,6 +146,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   private func configureCometdClient() {
     cometdClient.configure(url: server)
     let handshakeFields = authentication.getHandshakeFields(self)
+    self.log.debug("authentification = \(authentication)")
     cometdClient.connectHandshake(handshakeFields)
   }
   
@@ -208,14 +209,13 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     log.setup(level: logLevel)
   }
   
-  /*
-   Must be overriden by ClientHelper descendants
-   */
-  func storeHandshakeToken(_ authenticationDict: NSDictionary) { }
-  /*
-   Must be overriden by ClientHelper descendants
-   */
-  func eraseHandshakeToken() { }
+  func storeHandshakeToken(_ authenticationDict: NSDictionary) {
+    preconditionFailure("This method must be overridden")
+  }
+  
+  func eraseHandshakeToken() {
+    preconditionFailure("This method must be overridden")
+  }
   
   open func getClientId() -> String {
     return cometdClient.getCometdClientId()

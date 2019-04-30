@@ -79,6 +79,7 @@ open class ZetaPushSmartClient: ClientHelper {
     defaults.set(self.getSandboxId(), forKey: zetaPushDefaultKeys.sandboxId)
     if let token = authenticationDict["token"] as? String {
       defaults.set(token, forKey: zetaPushDefaultKeys.token)
+      authentication.update(token: token)
     }
     if let publicToken = authenticationDict["publicToken"] as? String  {
       defaults.set(publicToken, forKey: zetaPushDefaultKeys.publicToken)
