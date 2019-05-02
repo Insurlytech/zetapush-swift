@@ -54,6 +54,10 @@ open class AbstractHandshake {
   func getAuthData() -> [String: Any] {
     fatalError("This method must be overridden")
   }
+  
+  func update(token: String) {
+    fatalError("This method must be overridden")
+  }
 }
 
 // MARK: - TokenHandshake
@@ -69,6 +73,10 @@ open class TokenHandshake: AbstractHandshake {
   
   override func getAuthData() -> [String: Any] {
     return ["token": token]
+  }
+  
+  override func update(token: String) {
+    self.token = token
   }
 }
 
@@ -90,6 +98,10 @@ open class CredentialsHanshake: AbstractHandshake {
       "login": login,
       "password": password
     ]
+  }
+  
+  override func update(token: String) {
+    self.login = token
   }
 }
 

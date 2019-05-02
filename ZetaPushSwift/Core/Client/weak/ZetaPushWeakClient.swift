@@ -49,6 +49,7 @@ open class ZetaPushWeakClient: ClientHelper {
     
     if let token = authenticationDict["token"] as? String {
       defaults.set(token, forKey: zetaPushDefaultKeys.token)
+      authentication.update(token: token)
     }
     if let publicToken = authenticationDict["publicToken"] as? String {
       defaults.set(publicToken, forKey: zetaPushDefaultKeys.publicToken)
