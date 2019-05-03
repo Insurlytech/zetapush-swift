@@ -219,7 +219,7 @@ open class ZetaPushMacroService : NSObject {
         if let result = messageDict["result"] as? NSDictionary {
           seal.fulfill(result)
         }
-        if let errors = messageDict["errors"] as? [[String: Any]], errors.isEmpty, let error = errors.first {
+        if let errors = messageDict["errors"] as? [[String: Any]], !errors.isEmpty, let error = errors.first {
           seal.reject(ZetaPushMacroError.genericFromDictionnary(error as NSDictionary))
         } else {
           seal.reject(ZetaPushMacroError.unknowError)
@@ -262,7 +262,7 @@ open class ZetaPushMacroService : NSObject {
           let completion = U(result: zpMessage, name: verb, requestId: requestId)
           seal.fulfill(completion)
         }
-        if let errors = messageDict["errors"] as? [[String: Any]], errors.isEmpty, let error = errors.first {
+        if let errors = messageDict["errors"] as? [[String: Any]], !errors.isEmpty, let error = errors.first {
           seal.reject(ZetaPushMacroError.genericFromDictionnary(error as NSDictionary))
         } else {
           seal.reject(ZetaPushMacroError.unknowError)
@@ -305,7 +305,7 @@ open class ZetaPushMacroService : NSObject {
           let completion = U(result: zpMessage, name: verb, requestId: requestId)
           seal.fulfill(completion)
         }
-        if let errors = messageDict["errors"] as? [[String: Any]], errors.isEmpty, let error = errors.first {
+        if let errors = messageDict["errors"] as? [[String: Any]], !errors.isEmpty, let error = errors.first {
           seal.reject(ZetaPushMacroError.genericFromDictionnary(error as NSDictionary))
         } else {
           seal.reject(ZetaPushMacroError.unknowError)
