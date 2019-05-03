@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ZetaPushSwift"
-  s.version      = "1.0.18"
+  s.version      = "2.0"
   s.summary      = "Swift client for ZetaPush"
 
   # This description is used to generate tags and improve search results.
