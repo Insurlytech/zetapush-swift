@@ -100,9 +100,8 @@ open class CredentialsHanshake: AbstractHandshake {
     ]
   }
   
-  override func update(token: String) {
-    self.login = token
-  }
+  // For this case it should be more useful to update the type of Authentication
+  override func update(token: String) { }
 }
 
 // MARK: - Authentication
