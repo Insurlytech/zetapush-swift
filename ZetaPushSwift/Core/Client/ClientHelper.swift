@@ -266,10 +266,10 @@ open class ClientHelper: NSObject, CometdClientDelegate {
    */
   open func connectedToServer(_ client: CometdClient) {
     log.zp.debug("ClientHelper Connected to ZetaPush server")
-    wasConnected = connected
     connected = true
     if !wasConnected && connected {
       delegate?.onConnectionEstablished(self)
+      wasConnected = connected
     }
   }
   
