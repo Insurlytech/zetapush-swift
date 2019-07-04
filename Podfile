@@ -11,7 +11,7 @@ target 'ZetaPushSwift' do
   # Pods for ZetaPushSwift
   pod 'Starscream', '3.1.0'
   pod 'SwiftyJSON', '~> 5.0'
-  pod 'PromiseKit', '~> 6.8'
+  pod 'PromiseKit', '~> 6.10'
   pod 'XCGLogger', '~> 7.0'
   pod 'Gloss', '~> 2.1'
 end

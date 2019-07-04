@@ -24,7 +24,7 @@ open class ZetaPushServiceListener {
   open var onServiceError: ZPServiceErrorBlock?
   
   // Callback for /error macro channel
-  lazy var channelBlockMacroError:ChannelSubscriptionBlock = { [weak self] (messageDict) -> Void in
+  lazy var channelBlockMacroError: ChannelSubscriptionBlock = { [weak self] (messageDict) -> Void in
     guard let self = self else { return }
     self.onServiceError?(self.zetaPushService, ZetaPushServiceError.genericFromDictionnary(messageDict))
   }

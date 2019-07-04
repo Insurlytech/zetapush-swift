@@ -95,7 +95,7 @@ open class ZetaPushMacroService : NSObject {
   
   var channelSubscriptionBlocks = [String: [Subscription]]()
   
-  let timeInterval: TimeInterval = 30
+  var timeout: TimeInterval
 
   let log = XCGLogger(identifier: "macroserviceLogger", includeDefaultDestinations: true)
   
@@ -134,6 +134,7 @@ open class ZetaPushMacroService : NSObject {
   public init(_ clientHelper: ClientHelper, deploymentId: String) {
     self.clientHelper = clientHelper
     self.deploymentId = deploymentId
+    self.timeout = clientHelper.timeout
     super.init()
     
     let macroChannel = composeServiceChannel("completed")
@@ -227,7 +228,7 @@ open class ZetaPushMacroService : NSObject {
       }
       sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
       self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
-    }.timeout(after: timeInterval)
+    }.timeout(after: timeout)
   }
   
   open func call<T : Glossy, U: AbstractMacroCompletion>(verb: String, parameters: T) -> Promise<U> {
@@ -271,7 +272,7 @@ open class ZetaPushMacroService : NSObject {
       
       sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
       self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
-    }.timeout(after: timeInterval)
+    }.timeout(after: timeout)
   }
   
   open func call<U: AbstractMacroCompletion>(verb: String) -> Promise<U> {
@@ -314,7 +315,7 @@ open class ZetaPushMacroService : NSObject {
       
       sub = self?.clientHelper.subscribe(composeServiceChannel(verb), block: channelBlockMacroCall)
       self?.clientHelper.publish(composeServiceChannel("call"), message: dict)
-    }.timeout(after: timeInterval)
+    }.timeout(after: timeout)
   }
   
   open func call<T: Glossy>(verb: String, parameters: T) {

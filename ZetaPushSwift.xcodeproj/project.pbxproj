@@ -39,6 +39,7 @@
 		FFDFE3E422703AE800DEFD9C /* String+Encode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDFE3C722703AE800DEFD9C /* String+Encode.swift */; };
 		FFDFE3E522703AE800DEFD9C /* ZetaPushProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDFE3C822703AE800DEFD9C /* ZetaPushProxy.swift */; };
 		FFDFE3E622703AE800DEFD9C /* Logger+tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDFE3C922703AE800DEFD9C /* Logger+tags.swift */; };
+		FFE864DB22CE3B7000A7C743 /* ZetapushConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE864DA22CE3B7000A7C743 /* ZetapushConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		FFDFE3C722703AE800DEFD9C /* String+Encode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encode.swift"; sourceTree = "<group>"; };
 		FFDFE3C822703AE800DEFD9C /* ZetaPushProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZetaPushProxy.swift; sourceTree = "<group>"; };
 		FFDFE3C922703AE800DEFD9C /* Logger+tags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Logger+tags.swift"; sourceTree = "<group>"; };
+		FFE864DA22CE3B7000A7C743 /* ZetapushConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZetapushConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +194,7 @@
 				FFDFE3BA22703AE800DEFD9C /* Core */,
 				FFB7C3DC227039BF0031F6EF /* Ressources */,
 				C5896E271E84121A0037800F /* ZetaPushSwift.h */,
+				FFE864DA22CE3B7000A7C743 /* ZetapushConstants.swift */,
 			);
 			path = ZetaPushSwift;
 			sourceTree = "<group>";
@@ -382,6 +385,7 @@
 				FFDFE3D222703AE800DEFD9C /* CometdClient+Transport.swift in Sources */,
 				601DE5F922719C260019DC90 /* ClientHelperDelegate.swift in Sources */,
 				601DE5E722719C1D0019DC90 /* ZetaPushServicePublisher.swift in Sources */,
+				FFE864DB22CE3B7000A7C743 /* ZetapushConstants.swift in Sources */,
 				FFDFE3D822703AE800DEFD9C /* CometdClient+Subscription.swift in Sources */,
 				FFDFE3D122703AE800DEFD9C /* CometdClientDelegate.swift in Sources */,
 				FFDFE3D722703AE800DEFD9C /* CometdClient+Helper.swift in Sources */,
