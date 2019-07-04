@@ -28,7 +28,7 @@ Pod::Spec.new do |spec|
 
   spec.dependency "Starscream", "3.1.0"
   spec.dependency "SwiftyJSON", "~> 5.0"
-  spec.dependency "PromiseKit", "~> 6.8"
+  spec.dependency "PromiseKit", "~> 6.10"
   spec.dependency "XCGLogger", "~> 7.0"
   spec.dependency "Gloss", "~> 2.1"
 end

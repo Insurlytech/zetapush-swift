@@ -38,10 +38,11 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   private(set) var authentication: AbstractHandshake
   let cometdClient: CometdClient
   
-  open weak var delegate:ClientHelperDelegate?
+  open weak var delegate: ClientHelperDelegate?
   
   let log = XCGLogger(identifier: "zetapushLogger", includeDefaultDestinations: true)
   let tags = XCGLogger.Constants.userInfoKeyTags
+  public var timeOut: TimeInterval = ZetapushConstants.timeOut
   
   // MARK: Lifecycle
   public init(apiUrl: String, sandboxId: String, authentication: AbstractHandshake, resource: String = "", logLevel: XCGLogger.Level = .severe) {
