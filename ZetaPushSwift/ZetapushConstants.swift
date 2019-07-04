@@ -9,5 +9,5 @@
 import Foundation
 
 public enum ZetapushConstants {
-  static let timeOut: TimeInterval = 45
+  static let timeout: TimeInterval = 45
 }

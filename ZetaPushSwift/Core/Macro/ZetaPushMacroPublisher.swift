@@ -21,7 +21,7 @@ open class ZetaPushMacroPublisher {
   // MARK: Lifecycle
   public init(_ clientHelper: ClientHelper, deploymentId: String) {
     self.clientHelper = clientHelper
-    self.zetaPushMacroService = ZetaPushMacroService(clientHelper, deploymentId: deploymentId, timeOut: clientHelper.timeOut)
+    self.zetaPushMacroService = ZetaPushMacroService(clientHelper, deploymentId: deploymentId)
   }
   
   public convenience init(_ clientHelper: ClientHelper) {

@@ -42,7 +42,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   
   let log = XCGLogger(identifier: "zetapushLogger", includeDefaultDestinations: true)
   let tags = XCGLogger.Constants.userInfoKeyTags
-  public var timeOut: TimeInterval = ZetapushConstants.timeOut
+  public var timeout: TimeInterval = ZetapushConstants.timeout
   
   // MARK: Lifecycle
   public init(apiUrl: String, sandboxId: String, authentication: AbstractHandshake, resource: String = "", logLevel: XCGLogger.Level = .severe) {
