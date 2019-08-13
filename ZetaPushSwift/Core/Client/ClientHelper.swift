@@ -107,7 +107,11 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     
     // Check the http://api.zpush.io with sandboxId
     self.log.verbose("ZP server -> target url : " + url.description)
-    let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+    
+    let configuration = URLSessionConfiguration.default
+    configuration.timeoutIntervalForRequest = timeout
+    configuration.timeoutIntervalForResource = timeout * 3
+    let task = URLSession(configuration: configuration).dataTask(with: url) { [weak self] data, response, error in
       guard let self = self else { return }
       guard let data = data else {
         self.log.zp.error("Client Connection: No server for the sandbox")
