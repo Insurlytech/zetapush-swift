@@ -1,5 +1,5 @@
 PODS:
-  - Gloss (2.1.1)
+  - Gloss (3.0.0)
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
@@ -20,7 +20,7 @@ PODS:
     - ObjcExceptionBridging
 
 DEPENDENCIES:
-  - Gloss (~> 2.1)
+  - Gloss (~> 3.0)
   - PromiseKit (~> 6.10)
   - Starscream (= 3.1.0)
   - SwiftyJSON (~> 5.0)
@@ -36,13 +36,13 @@ SPEC REPOS:
     - XCGLogger
 
 SPEC CHECKSUMS:
-  Gloss: 9df15229b2f6484c14752a738474fd2528b4c5cd
+  Gloss: c4b5281273a9053eadbda219001c97595aa9b1e8
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   PromiseKit: 1fdaeb6c0a94a5114fcb814ff3d772b86886ad4e
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: dcf5933a6da19621f445ba886e593a8924816a6d
+PODFILE CHECKSUM: a1e98b9b943c3424875252c83e2a2b5307e9beaa
 
 COCOAPODS: 1.7.3

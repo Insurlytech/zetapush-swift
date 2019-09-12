@@ -13,20 +13,13 @@ target 'ZetaPushSwift' do
   pod 'SwiftyJSON', '~> 5.0'
   pod 'PromiseKit', '~> 6.10'
   pod 'XCGLogger', '~> 7.0'
-  pod 'Gloss', '~> 2.1'
+  pod 'Gloss', '~> 3.0'
 end
 
 post_install do |installer|
-    
-    installer.pods_project.build_configurations.each do |config|
-        config.build_settings['SWIFT_SUPPRESS_WARNINGS'] = 'YES'
-        config.build_settings['SWIFT_VERSION'] = '5.0'
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['SWIFT_SUPPRESS_WARNINGS'] = 'YES'
     end
-    
-    installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-            config.build_settings['SWIFT_SUPPRESS_WARNINGS'] = 'YES'
-            config.build_settings['SWIFT_VERSION'] = '5.0'
-        end
-    end
+  end
 end

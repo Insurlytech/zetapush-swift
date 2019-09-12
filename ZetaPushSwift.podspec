@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |spec|
   spec.name         = "ZetaPushSwift"
-  spec.version      = "2.3"
+  spec.version      = "2.4"
   spec.summary      = "Swift client for ZetaPush"
   spec.description  = <<-DESC
   Swift client for ZetaPush
@@ -30,5 +30,5 @@ Pod::Spec.new do |spec|
   spec.dependency "SwiftyJSON", "~> 5.0"
   spec.dependency "PromiseKit", "~> 6.10"
   spec.dependency "XCGLogger", "~> 7.0"
-  spec.dependency "Gloss", "~> 2.1"
+  spec.dependency "Gloss", "~> 3.0"
 end
