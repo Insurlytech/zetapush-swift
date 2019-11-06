@@ -322,7 +322,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   open func connectionFailed(_ client: CometdClient) {
     log.zp.error("ClientHelper Failed to connect to Cometd server!")
     if wasConnected {
-      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(automaticReconnectionDelay)) { [weak self] in
+      DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + .seconds(automaticReconnectionDelay)) { [weak self] in
         self?.connect()
       }
     }

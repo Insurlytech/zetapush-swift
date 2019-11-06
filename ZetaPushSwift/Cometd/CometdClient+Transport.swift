@@ -23,16 +23,16 @@ extension CometdClient {
   
   public func didDisconnect(_ error: Error?) {
     log.debug("CometdClient didDisconnect")
-    self.delegate?.disconnectedFromServer(self)
     self.connectionInitiated = false
     self.cometdConnected = false
+    self.delegate?.disconnectedFromServer(self)
   }
   
   public func didFailConnection(_ error: Error?) {
     log.warning("CometdClient didFailConnection")
-    self.delegate?.connectionFailed(self)
     self.connectionInitiated = false
     self.cometdConnected = false
+    self.delegate?.connectionFailed(self)
   }
   
   public func didWriteError(_ error: Error?) {
