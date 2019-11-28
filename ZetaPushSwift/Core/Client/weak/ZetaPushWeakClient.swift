@@ -20,7 +20,7 @@ import XCGLogger
 // MARK: - ZetaPushWeakClient
 open class ZetaPushWeakClient: ClientHelper {
   // MARK: LifeCycle
-  public init(sandboxId: String, weakDeploymentId: String, logLevel: XCGLogger.Level = .severe) {
+  public init(apiUrl: String? = nil, sandboxId: String, weakDeploymentId: String, logLevel: XCGLogger.Level = .severe) {
     let defaults = UserDefaults.standard
     let storedSandboxId = defaults.string(forKey: zetaPushDefaultKeys.sandboxId)
     var stringToken = ""
@@ -30,15 +30,15 @@ open class ZetaPushWeakClient: ClientHelper {
     }
     
     let authentication = Authentication.weak(stringToken, deploymentId: weakDeploymentId)
-    super.init(apiUrl: zetaPushDefaultConfig.apiUrl, sandboxId: sandboxId, authentication: authentication, logLevel: logLevel)
+    super.init(apiUrl: apiUrl ?? zetaPushDefaultConfig.apiUrl, sandboxId: sandboxId, authentication: authentication, logLevel: logLevel)
     
     if storedSandboxId == sandboxId {
       self.token = stringToken
     }
   }
   
-  public convenience init(sandboxId: String, logLevel: XCGLogger.Level = .severe) {
-    self.init(sandboxId: sandboxId, weakDeploymentId: zetaPushDefaultConfig.weakDeploymentId, logLevel: logLevel)
+  public convenience init(sandboxId: String, apiUrl: String? = nil, logLevel: XCGLogger.Level = .severe) {
+    self.init(apiUrl: apiUrl, sandboxId: sandboxId, weakDeploymentId: zetaPushDefaultConfig.weakDeploymentId, logLevel: logLevel)
   }
   
   // MARK: Methods

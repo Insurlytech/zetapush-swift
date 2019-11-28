@@ -27,7 +27,7 @@ DEPENDENCIES:
   - XCGLogger (~> 7.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Gloss
     - ObjcExceptionBridging
     - PromiseKit
@@ -45,4 +45,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a1e98b9b943c3424875252c83e2a2b5307e9beaa
 
-COCOAPODS: 1.7.3
+COCOAPODS: 1.8.3
