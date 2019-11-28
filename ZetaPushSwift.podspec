@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |spec|
   spec.name         = "ZetaPushSwift"
-  spec.version      = "2.4.1"
+  spec.version      = "2.4.2"
   spec.summary      = "Swift client for ZetaPush"
   spec.description  = <<-DESC
   Swift client for ZetaPush
