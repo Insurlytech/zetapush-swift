@@ -9,10 +9,11 @@
 
 // MARK: - Transport
 public protocol Transport {
+  var isConnected: Bool { get }
+  
   func writeString(_ aString: String)
   func openConnection()
   func closeConnection()
-  func isConnected() -> Bool
 }
 
 public protocol TransportDelegate: class {

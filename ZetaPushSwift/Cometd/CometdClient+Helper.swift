@@ -18,7 +18,7 @@ public extension CometdClient {
   
   ///  Validate cometd transport is connected
   func isTransportConnected() -> Bool {
-    return self.transport?.isConnected() ?? false
+    return self.transport?.isConnected ?? false
   }
 }
 
