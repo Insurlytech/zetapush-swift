@@ -1,33 +1,36 @@
 PODS:
-  - Gloss (3.0.0)
+  - CometDClient (1.0.0-alpha-4):
+    - Starscream (= 4.0.3)
+    - SwiftyJSON (~> 5.0)
+    - XCGLogger (~> 7.0.1)
+  - Gloss (3.1.0)
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
   - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
-  - PromiseKit (6.10.0):
-    - PromiseKit/CorePromise (= 6.10.0)
-    - PromiseKit/Foundation (= 6.10.0)
-    - PromiseKit/UIKit (= 6.10.0)
-  - PromiseKit/CorePromise (6.10.0)
-  - PromiseKit/Foundation (6.10.0):
+  - PromiseKit (6.13.1):
+    - PromiseKit/CorePromise (= 6.13.1)
+    - PromiseKit/Foundation (= 6.13.1)
+    - PromiseKit/UIKit (= 6.13.1)
+  - PromiseKit/CorePromise (6.13.1)
+  - PromiseKit/Foundation (6.13.1):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.10.0):
+  - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
-  - Starscream (3.1.0)
+  - Starscream (4.0.3)
   - SwiftyJSON (5.0.0)
-  - XCGLogger (7.0.0):
-    - XCGLogger/Core (= 7.0.0)
-  - XCGLogger/Core (7.0.0):
+  - XCGLogger (7.0.1):
+    - XCGLogger/Core (= 7.0.1)
+  - XCGLogger/Core (7.0.1):
     - ObjcExceptionBridging
 
 DEPENDENCIES:
-  - Gloss (~> 3.0)
-  - PromiseKit (~> 6.10)
-  - Starscream (= 3.1.0)
-  - SwiftyJSON (~> 5.0)
-  - XCGLogger (~> 7.0)
+  - CometDClient (~> 1.0.0-alpha-4)
+  - Gloss (~> 3.1.0)
+  - PromiseKit (~> 6.13)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
+    - CometDClient
     - Gloss
     - ObjcExceptionBridging
     - PromiseKit
@@ -36,13 +39,14 @@ SPEC REPOS:
     - XCGLogger
 
 SPEC CHECKSUMS:
-  Gloss: c4b5281273a9053eadbda219001c97595aa9b1e8
+  CometDClient: ebd648789cab217a1d46ff0210bc2e0a5371962b
+  Gloss: 2dbf87af0e4dd24753f7de933356ff6c5c012426
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
-  PromiseKit: 1fdaeb6c0a94a5114fcb814ff3d772b86886ad4e
-  Starscream: 08172b481e145289c4930cb567230fb55897cfa4
+  PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
+  Starscream: ef06f0961fff0880bca0604416d61141e4faca67
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
-  XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
+  XCGLogger: 1943831ef907df55108b0b18657953f868de973b
 
-PODFILE CHECKSUM: a1e98b9b943c3424875252c83e2a2b5307e9beaa
+PODFILE CHECKSUM: 57b8db2affd6f41f24b3478b482d6bf553df4274
 
-COCOAPODS: 1.8.3
+COCOAPODS: 1.9.0
