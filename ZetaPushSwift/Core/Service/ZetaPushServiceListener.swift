@@ -6,14 +6,12 @@
 //  Copyright © 2019 Leocare. All rights reserved.
 //
 
+import CometDClient
 import Foundation
 import Gloss
 
 // MARK: - ModelBlockTuple
-public struct ModelBlockTuple {
-  let model: CometdSubscriptionModel
-  let block: ChannelSubscriptionBlock?
-}
+public typealias ModelBlockTuple = CometDClient.ModelBlockTuple
 
 // MARK: - ZetaPushServiceListener
 open class ZetaPushServiceListener {

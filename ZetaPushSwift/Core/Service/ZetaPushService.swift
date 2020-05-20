@@ -6,6 +6,7 @@
 //  Copyright © 2019 Leocare. All rights reserved.
 //
 
+import CometDClient
 import Foundation
 import PromiseKit
 import XCGLogger

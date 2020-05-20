@@ -12,6 +12,7 @@
  Use his own subscription list to handle generic /completed channel when we call a macro with hardfail = true
  For the promise asyncCall function, the global (cometD) subscription list is used
  */
+import CometDClient
 import Foundation
 import PromiseKit
 import XCGLogger

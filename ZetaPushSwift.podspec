@@ -26,9 +26,7 @@ Pod::Spec.new do |spec|
   spec.framework  = "UIKit", "Foundation"
   spec.requires_arc = true
 
-  spec.dependency "Starscream", "4.0.3"
-  spec.dependency "SwiftyJSON", "~> 5.0"
   spec.dependency "PromiseKit", "~> 6.13"
-  spec.dependency "XCGLogger", "~> 7.0.1"
   spec.dependency "Gloss", "~> 3.0"
+  spec.dependency "CometDClient", "~> 1.0.0-alpha-4"
 end

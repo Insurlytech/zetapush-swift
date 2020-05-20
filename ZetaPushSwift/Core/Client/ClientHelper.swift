@@ -6,6 +6,7 @@
 //  Copyright © 2019 Leocare. All rights reserved.
 //
 
+import CometDClient
 import Foundation
 import XCGLogger
 
@@ -350,7 +351,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     delegate?.onDidUnsubscribeFromChannel(self, channel: channel)
   }
   
-  open func subscriptionFailedWithError(_ client: CometdClient, error: subscriptionError) {
+  open func subscriptionFailedWithError(_ client: CometdClient, error: SubscriptionError) {
     log.zp.error("ClientHelper Subscription failed")
     delegate?.onSubscriptionFailedWithError(self, error: error)
   }

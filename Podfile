@@ -9,10 +9,9 @@ target 'ZetaPushSwift' do
   use_frameworks!
 
   # Pods for ZetaPushSwift
-  pod 'Starscream', '4.0.3'
-  pod 'SwiftyJSON', '~> 5.0'
+  pod 'CometDClient', '~> 1.0.0-alpha-4'
+#  pod 'CometDClient', :path => '../../CometDClient-iOS' #AGU
   pod 'PromiseKit', '~> 6.13'
-  pod 'XCGLogger', '~> 7.0.1'
   pod 'Gloss', '~> 3.1.0'
 end
 
