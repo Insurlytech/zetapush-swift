@@ -1,6 +1,6 @@
 //
 //  ZetaPushProxy.swift
-//  Zetapush
+//  ZetaPush
 //
 //  Created by Anthony Guiguen on 19/04/2019.
 //  Copyright © 2019 Leocare. All rights reserved.

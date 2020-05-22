@@ -36,7 +36,7 @@ target 'ZetaPushTestPod' do
   use_frameworks!
 
   # Pods for ZetaPushTestPod
-  pod "Zetapush"
+  pod "ZetaPush"
 
 end
 
