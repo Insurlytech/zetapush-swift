@@ -7,6 +7,8 @@
 //
 // Adapted from https://github.com/hamin/FayeSwift
 
+import Foundation
+
 extension ZetaPushProxy where Base == String {
   // http://iosdevelopertips.com/swift-code/base64-encode-decode-swift.html
   func encodedString() -> String {

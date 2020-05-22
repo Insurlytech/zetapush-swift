@@ -7,6 +7,7 @@
 //
 
 import PromiseKit
+import Foundation
 
 extension Promise {
   func timeout(after seconds: TimeInterval) -> Promise<T> {

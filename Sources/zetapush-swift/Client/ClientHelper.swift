@@ -9,6 +9,7 @@
 import CometDClient
 import Foundation
 import XCGLogger
+import UIKit
 
 /*
  Base class for managing ZetaPush connexion
