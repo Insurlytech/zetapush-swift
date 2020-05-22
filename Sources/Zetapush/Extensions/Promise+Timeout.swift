@@ -1,6 +1,6 @@
 //
 //  Promise+Timeout.swift
-//  ZetaPushSwift
+//  Zetapush
 //
 //  Created by Anthony Guiguen on 24/04/2019.
 //  Copyright © 2019 ZetaPush. All rights reserved.

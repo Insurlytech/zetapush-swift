@@ -36,7 +36,7 @@ target 'ZetaPushTestPod' do
   use_frameworks!
 
   # Pods for ZetaPushTestPod
-  pod "ZetaPushSwift"
+  pod "Zetapush"
 
 end
 
@@ -70,7 +70,7 @@ You can read the [full documentation](https://doc.zetapush.com/how/introduction/
 
 You must import the library into your swift file
 ```swift
-import ZetaPushSwift 
+import ZetaPush 
 
 ```
 
@@ -78,7 +78,7 @@ Create a ZetaPushWeakClient object. This object will do all the hard work for yo
 
 ```swift
 import UIKit
-import ZetaPushSwift
+import ZetaPush
 
 class ViewController: UIViewController {
 
@@ -100,7 +100,7 @@ To verify that you're really connected, let's add a callback to be warned when t
 
 ```swift
 import UIKit
-import ZetaPushSwift
+import ZetaPush
 
 class ViewController: UIViewController, ClientHelperDelegate {
 
@@ -139,7 +139,7 @@ Back to the code !
 
 ```swift
 import UIKit
-import ZetaPushSwift
+import ZetaPush
 
 class ViewController: UIViewController, ClientHelperDelegate {
 
@@ -215,7 +215,7 @@ Back to code !
 
 ```swift
 import UIKit
-import ZetaPushSwift
+import ZetaPush
 
 class ViewController: UIViewController, ClientHelperDelegate {
 
@@ -264,7 +264,7 @@ With ZetaPush IOs SDK, you can call a macro in a "nearly" synchronous way thanks
 
 ```swift
 import UIKit
-import ZetaPushSwift
+import ZetaPush
 
 class ViewController: UIViewController {
 

@@ -1,6 +1,6 @@
 # Frequently Asked Questions
 
-## Why I get the following Swift Compiler Error 'No such module 'ZetaPushSwift' ?
+## Why I get the following Swift Compiler Error 'No such module 'Zetapush' ?
 
 This is a common error due to incorrect project selection.
 

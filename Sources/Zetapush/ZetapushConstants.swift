@@ -1,6 +1,6 @@
 //
 //  ZetapushConstants.swift
-//  ZetaPushSwift
+//  Zetapush
 //
 //  Created by Anthony Guiguen on 04/07/2019.
 //  Copyright © 2019 ZetaPush. All rights reserved.
