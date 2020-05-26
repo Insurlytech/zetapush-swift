@@ -38,7 +38,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   var logLevel: XCGLogger.Level = .severe
   
   private(set) var authentication: AbstractHandshake
-  let cometdClient: CometdClient
+  let cometdClient: CometdClientContract
   
   open weak var delegate: ClientHelperDelegate?
   
@@ -144,7 +144,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
       self.log.debug("Client Connection: ZetaPush selected Server")
       self.log.debug("Client Connection: server returned server url : \(self.server)")
       
-      self.cometdClient.setLogLevel(logLevel: self.logLevel)
+      self.cometdClient.log.outputLevel = self.logLevel
       self.configureCometdClient()
     }
     task.resume()
@@ -154,12 +154,12 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     cometdClient.configure(url: server)
     let handshakeFields = authentication.getHandshakeFields(self)
     self.log.debug("authentification = \(authentication)")
-    cometdClient.connectHandshake(handshakeFields)
+    cometdClient.handshake(fields: handshakeFields)
   }
   
   open func subscribe(_ tuples: [ModelBlockTuple]) {
     // Convert model to subscription
-    let models: [CometdSubscriptionModel] = tuples.map(cometdClient.modelToSubscription)
+    let models: [CometdSubscriptionModel] = tuples.map(cometdClient.transformModelBlockToSubscription(modelBlock:))
       .filter { $0.state.isSubscribingTo }
       .compactMap { $0.state.model }
     // Batch subscriptions
@@ -225,7 +225,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   }
   
   open func getClientId() -> String {
-    return cometdClient.getCometdClientId()
+    return cometdClient.clientId ?? ""
   }
   
   open func getHandshakeFields() -> [String: Any] {
@@ -253,7 +253,7 @@ open class ClientHelper: NSObject, CometdClientDelegate {
   }
   
   open func isConnected() -> Bool {
-    return cometdClient.isConnected()
+    return cometdClient.isConnected
   }
   
   open func getPublicToken() -> String {
