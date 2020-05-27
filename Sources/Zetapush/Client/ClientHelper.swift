@@ -16,7 +16,7 @@ import UIKit
  */
 
 // MARK: - ClientHelper
-open class ClientHelper: NSObject, CometdClientDelegate {
+open class ClientHelper: NSObject {
   // MARK: Properties
   var sandboxId = ""
   var server = ""
@@ -268,10 +268,30 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     return !isWeaklyAuthenticated() && !token.isEmpty
   }
   
-  /*
-   Delegate functions from CometdClientDelegate
-   */
-  open func connectedToServer(_ client: CometdClient) {
+  func subsbribeQueuedSubscriptions() {
+    log.zp.debug("ClientHelper subscribe queued subscriptions")
+    // Automatic resubscribe after handshake (not the first one)
+    if !firstHandshakeFlag {
+      let tempArray = subscriptionQueue
+      subscriptionQueue.removeAll()
+      tempArray.forEach({ subscribe($0.channel, block: $0.callback) })
+    }
+    firstHandshakeFlag = false
+  }
+}
+
+extension ClientHelper: CometdClientDelegate {
+  // MARK: CometdClientDelegate
+  public func didReceiveMessage(dictionary: NSDictionary, from channel: String, client: CometdClientContract) {
+    log.zp.debug("ClientHelper messageReceived \(channel)")
+    log.zp.debug(dictionary)
+  }
+  
+  public func didReceivePong(from client: CometdClientContract) {
+    log.zp.debug("ClientHelper pongReceived")
+  }
+  
+  public func didConnected(from client: CometdClientContract) {
     log.zp.debug("ClientHelper Connected to ZetaPush server")
     connected = true
     if !wasConnected && connected {
@@ -280,10 +300,10 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     }
   }
   
-  open func handshakeSucceeded(_ client: CometdClient, handshakeDict: NSDictionary) {
+  public func handshakeDidSucceeded(dictionary: NSDictionary, from client: CometdClientContract) {
     log.zp.debug("ClientHelper Handshake Succeeded")
-    log.zp.debug(handshakeDict)
-    guard let authentication = handshakeDict["authentication"] as? NSDictionary else {
+    log.zp.debug(dictionary)
+    guard let authentication = dictionary["authentication"] as? NSDictionary else {
       log.zp.error("handshakeSucceeded: authentication is nil")
       return
     }
@@ -305,23 +325,23 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     delegate?.onSuccessfulHandshake(self)
   }
   
-  func subsbribeQueuedSubscriptions() {
-    log.zp.debug("ClientHelper subscribe queued subscriptions")
-    // Automatic resubscribe after handshake (not the first one)
-    if !firstHandshakeFlag {
-      let tempArray = subscriptionQueue
-      subscriptionQueue.removeAll()
-      tempArray.forEach({ subscribe($0.channel, block: $0.callback) })
-    }
-    firstHandshakeFlag = false
-  }
-  
-  open func handshakeFailed(_ client: CometdClient) {
+  public func handshakeDidFailed(from client: CometdClientContract) {
     log.zp.error("ClientHelper Handshake Failed")
     delegate?.onFailedHandshake(self)
   }
   
-  open func connectionFailed(_ client: CometdClient) {
+  public func didDisconnected(error: Error?, from client: CometdClientContract) {
+    log.zp.debug("ClientHelper Disconnected from Cometd server")
+    connected = false
+    delegate?.onConnectionClosed(self)
+  }
+  
+  public func didAdvisedToReconnect(from client: CometdClientContract) {
+    log.zp.debug("ClientHelper Disconnected from Cometd server")
+    delegate?.onConnectionClosedAdviceReconnect(self)
+  }
+  
+  public func didFailConnection(error: Error?, from client: CometdClientContract) {
     log.zp.error("ClientHelper Failed to connect to Cometd server!")
     if wasConnected {
       DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + .seconds(automaticReconnectionDelay)) { [weak self] in
@@ -331,34 +351,22 @@ open class ClientHelper: NSObject, CometdClientDelegate {
     delegate?.onConnectionBroken(self)
   }
   
-  open func disconnectedFromServer(_ client: CometdClient) {
-    log.zp.debug("ClientHelper Disconnected from Cometd server")
-    connected = false
-    delegate?.onConnectionClosed(self)
-  }
-  
-  open func disconnectedAdviceReconnect(_ client: CometdClient) {
-    log.zp.debug("ClientHelper Disconnected from Cometd server")
-    delegate?.onConnectionClosedAdviceReconnect(self)
-  }
-  
-  open func didSubscribeToChannel(_ client: CometdClient, channel: String) {
+  public func didSubscribeToChannel(channel: String, from client: CometdClientContract) {
     log.zp.debug("ClientHelper Subscribed to channel \(channel)")
     delegate?.onDidSubscribeToChannel(self, channel: channel)
   }
   
-  open func didUnsubscribeFromChannel(_ client: CometdClient, channel: String) {
+  public func didUnsubscribeFromChannel(channel: String, from client: CometdClientContract) {
     log.zp.debug("ClientHelper Unsubscribed from channel \(channel)")
     delegate?.onDidUnsubscribeFromChannel(self, channel: channel)
   }
   
-  open func subscriptionFailedWithError(_ client: CometdClient, error: SubscriptionError) {
+  public func subscriptionFailedWithError(error: SubscriptionError, from client: CometdClientContract) {
     log.zp.error("ClientHelper Subscription failed")
     delegate?.onSubscriptionFailedWithError(self, error: error)
   }
   
-  open func messageReceived(_ client: CometdClient, messageDict: NSDictionary, channel: String) {
-    log.zp.debug("ClientHelper messageReceived \(channel)")
-    log.zp.debug(messageDict)
+  public func didWriteError(error: Error, from client: CometdClientContract) {
+    log.zp.debug("ClientHelper writeErrorReceived \(error.localizedDescription)")
   }
 }
