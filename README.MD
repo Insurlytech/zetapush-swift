@@ -25,7 +25,7 @@ In the project directory launch the command
 pod init
 ```
 
-A PodFile is created, edit it and add ZetaPushSwift pod
+A PodFile is created, edit it and add ZetaPushNetwork pod
 
 ```
 # Uncomment the next line to define a global platform for your project
@@ -36,7 +36,7 @@ target 'ZetaPushTestPod' do
   use_frameworks!
 
   # Pods for ZetaPushTestPod
-  pod "ZetaPush"
+  pod "ZetaPushNetwork"
 
 end
 
