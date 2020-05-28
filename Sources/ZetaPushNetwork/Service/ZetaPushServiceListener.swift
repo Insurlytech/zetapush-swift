@@ -44,7 +44,7 @@ open class ZetaPushServiceListener {
   ///
   public func getModelBlock<T: Glossy>(verb: String, callback: @escaping (T) -> Void) -> ModelBlockTuple {
     let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
-    let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: clientHelper.cometdClient.cometdClientId)
+    let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: clientHelper.cometdClient.clientId)
     return ModelBlockTuple(model: model, block: { [weak self] (messageDict: NSDictionary) -> Void in
       guard let self = self else { return }
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
@@ -58,7 +58,7 @@ open class ZetaPushServiceListener {
   ///
   public func getModelBlock<T: Glossy>(verb: String, callback: @escaping ([T]) -> Void) -> ModelBlockTuple {
     let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
-    let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: clientHelper.cometdClient.cometdClientId)
+    let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: clientHelper.cometdClient.clientId)
     return ModelBlockTuple(model: model, block: { [weak self] (messageDict: NSDictionary) -> Void in
       guard let self = self else { return }
       guard let zpMessage: [T] = self.parse(messageDict: messageDict) else {
@@ -72,7 +72,7 @@ open class ZetaPushServiceListener {
   ///
   public func getModelBlock<T: NSDictionary>(verb: String, callback: @escaping (T) -> Void) -> ModelBlockTuple {
     let channel = clientHelper.composeServiceChannel(verb, deploymentId: zetaPushService.deploymentId)
-    let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: self.clientHelper.cometdClient.cometdClientId)
+    let model = CometdSubscriptionModel(subscriptionUrl: channel, clientId: self.clientHelper.cometdClient.clientId)
     return ModelBlockTuple(model: model, block: { [weak self] (messageDict: NSDictionary) -> Void in
       guard let self = self else { return }
       guard let zpMessage: T = self.parse(messageDict: messageDict) else {
