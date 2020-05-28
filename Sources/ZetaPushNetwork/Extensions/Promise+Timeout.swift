@@ -1,12 +1,13 @@
 //
 //  Promise+Timeout.swift
-//  ZetaPushSwift
+//  ZetaPush
 //
 //  Created by Anthony Guiguen on 24/04/2019.
 //  Copyright © 2019 ZetaPush. All rights reserved.
 //
 
 import PromiseKit
+import Foundation
 
 extension Promise {
   func timeout(after seconds: TimeInterval) -> Promise<T> {

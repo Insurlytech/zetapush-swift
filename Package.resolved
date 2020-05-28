@@ -1,0 +1,70 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CometDClient",
+        "repositoryURL": "https://github.com/Insurlytech/CometDClient-iOS.git",
+        "state": {
+          "branch": null,
+          "revision": "7dc8edfe6af41db6c6e64bf8541b64d2c93a559a",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "Gloss",
+        "repositoryURL": "https://github.com/hkellaway/Gloss.git",
+        "state": {
+          "branch": null,
+          "revision": "d2249d299a17418dc69b7685a00ccd31510cf14e",
+          "version": "3.1.0"
+        }
+      },
+      {
+        "package": "PromiseKit",
+        "repositoryURL": "https://github.com/mxcl/PromiseKit",
+        "state": {
+          "branch": null,
+          "revision": "f14f16cc2602afec1030e4f492100d6d43dca544",
+          "version": "6.13.1"
+        }
+      },
+      {
+        "package": "Starscream",
+        "repositoryURL": "https://github.com/daltoniam/Starscream.git",
+        "state": {
+          "branch": null,
+          "revision": "cfc7b7b8dc98df3f7bef8aa068bbaec13d9ceb1b",
+          "version": "4.0.3"
+        }
+      },
+      {
+        "package": "swift-nio-zlib-support",
+        "repositoryURL": "https://github.com/apple/swift-nio-zlib-support.git",
+        "state": {
+          "branch": null,
+          "revision": "37760e9a52030bb9011972c5213c3350fa9d41fd",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "SwiftyJSON",
+        "repositoryURL": "https://github.com/SwiftyJSON/SwiftyJSON.git",
+        "state": {
+          "branch": null,
+          "revision": "2b6054efa051565954e1d2b9da831680026cd768",
+          "version": "4.3.0"
+        }
+      },
+      {
+        "package": "XCGLogger",
+        "repositoryURL": "https://github.com/DaveWoodCom/XCGLogger.git",
+        "state": {
+          "branch": null,
+          "revision": "a9c4667b247928a29bdd41be2ec2c8d304215a54",
+          "version": "7.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
