@@ -1,4 +1,13 @@
 # CHANGELOG
+All notable changes to this project will be documented in this file.
+
+## 3.0.0
+* CometD - Remove CometDClient from ZetaPush  
+[Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
+[#32](https://github.com/Insurlytech/zetapush-swift/pull/32)
+* SPM - Migrate ZetaPushNetworks to Swift Package Manager  
+[Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
+[#31](https://github.com/Insurlytech/zetapush-swift/pull/31)
 
 ## 2.4.2
 * Client API - Add the possibility to override api Url for Smart and Weak Clients  
