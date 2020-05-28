@@ -10,55 +10,31 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-You must have [Cocoapods](https://cocoapods.org/) installed and running
+## Installation
 
+### CocoaPods
+
+Check out [Get Started](http://cocoapods.org/) tab on [cocoapods.org](http://cocoapods.org/).
+
+To use ZetaPushNetwork in your 'Podfile':
+  
+    pod 'ZetaPushNetwork', '~> 3.0.0'
+
+Then run:
+
+    pod install
+
+### Swift Package Manager
+
+The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
+
+Once you have your Swift package set up, adding ZetaPushNetwork as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
+
+```swift
+dependencies: [
+    .Package(url: "https://github.com/Insurlytech/CometDClient-iOS.git", majorVersion: 3)
+]
 ```
-sudo gem install cocoapods
-```
-
-### Installing
-
-First create a new project with XCode.
-In the project directory launch the command
-
-```console
-pod init
-```
-
-A PodFile is created, edit it and add ZetaPushNetwork pod
-
-```
-# Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
-
-target 'ZetaPushTestPod' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
-
-  # Pods for ZetaPushTestPod
-  pod "ZetaPushNetwork"
-
-end
-
-```
-
-Finally, run pod install to install libraries
-
-```console
-pod install
-```
-
-You can now open the newly generated workspace (.xcworkspace) in XCode
-
-:warning: **Close the previously openned project and open the workspace instead.**
-
-### Pre-requisit
-
-You must have an account on [ZetaPush](https://zetapush.com) and a valid SandboxId. FYI, on ZetaPush a SandboxId identify your hosted application on ZetaPush cloud.
-
-For the examples above, you must have deployed an authentication ( [Weak](https://ref.zpush.io/#it_weak) at least) and an [Echo](https://ref.zpush.io/#it_echo) service
-
-You can read the [full documentation](https://doc.zetapush.com/how/introduction/) for more information
 
 ## Any questions?
 
@@ -70,7 +46,7 @@ You can read the [full documentation](https://doc.zetapush.com/how/introduction/
 
 You must import the library into your swift file
 ```swift
-import ZetaPush 
+import ZetaPushNetwork 
 
 ```
 
@@ -78,7 +54,7 @@ Create a ZetaPushWeakClient object. This object will do all the hard work for yo
 
 ```swift
 import UIKit
-import ZetaPush
+import ZetaPushNetwork
 
 class ViewController: UIViewController {
 
@@ -100,7 +76,7 @@ To verify that you're really connected, let's add a callback to be warned when t
 
 ```swift
 import UIKit
-import ZetaPush
+import ZetaPushNetwork
 
 class ViewController: UIViewController, ClientHelperDelegate {
 
@@ -139,7 +115,7 @@ Back to the code !
 
 ```swift
 import UIKit
-import ZetaPush
+import ZetaPushNetwork
 
 class ViewController: UIViewController, ClientHelperDelegate {
 
@@ -215,7 +191,7 @@ Back to code !
 
 ```swift
 import UIKit
-import ZetaPush
+import ZetaPushNetwork
 
 class ViewController: UIViewController, ClientHelperDelegate {
 
@@ -264,7 +240,7 @@ With ZetaPush IOs SDK, you can call a macro in a "nearly" synchronous way thanks
 
 ```swift
 import UIKit
-import ZetaPush
+import ZetaPushNetwork
 
 class ViewController: UIViewController {
 
@@ -370,3 +346,17 @@ When you will create a MyAPIListener object, the sendMessage function will be ca
 	// The result will be returned to the AsyncAPIListener
 	
 ```
+
+## Contact
+
+### Anthony GUIGUEN
+* https://github.com/anthonyGuiguen
+* anthony@insurlytech.com
+
+### Steven WATREMEZ
+* https://github.com/StevenWatremez
+* steven@insurlytech.com
+
+### Jérémie GOAS
+* https://github.com/jgoas
+* jeremie@insurlytech.com
