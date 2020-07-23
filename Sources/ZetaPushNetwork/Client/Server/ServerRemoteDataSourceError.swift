@@ -26,7 +26,7 @@ public enum ServerRemoteDataSourceError: Error {
     case .serversNotFound:
       return "ERROR_CLIENT_HELPER_SERVERS_NOT_FOUND"
     case .failed:
-      return ""
+      return "ERROR_CLIENT_HELPER_FIND_SERVERS_FAILED"
     }
   }
   
@@ -34,7 +34,7 @@ public enum ServerRemoteDataSourceError: Error {
     switch self {
     case .canNotOpenURL(let url):
       return NSError(domain: ErrorConstant.domain, code: 403, userInfo: [
-        NSLocalizedFailureReasonErrorKey: NSLocalizedString("Can not open URL", comment: ""),
+        NSLocalizedDescriptionKey: NSLocalizedString("Can not open URL", comment: ""),
         NSLocalizedFailureReasonErrorKey: NSLocalizedString("Can not open this url : \(url).", comment: ""),
         ErrorConstant.code: code
       ])
