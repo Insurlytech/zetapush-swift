@@ -18,4 +18,8 @@ public extension ZetaPushProxy where Base == XCGLogger {
   func debug(_ string: Any) {
     base.debug(string, userInfo: userInfo)
   }
+  
+  func verbose(_ string: Any) {
+    base.verbose(string, userInfo: userInfo)
+  }
 }
