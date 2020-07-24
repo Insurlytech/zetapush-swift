@@ -9,14 +9,15 @@
 import Foundation
 import Gloss
 
-enum zetaPushDefaultConfig {
+enum ZetaPushDefaultConfig {
   static let apiUrl = "https://api.zpush.io"
   static let weakDeploymentId = "weak_0"
   static let simpleDeploymentId = "simple_0"
   static let macroDeployementId = "macro_0"
   static let resourceLength = 8
+  static let timeout: TimeInterval = 45
 }
-enum zetaPushDefaultKeys{
+enum ZetaPushDefaultKeys {
   static let sandboxId = "zetapush.sandboxId"
   static let token = "zetapush.token"
   static let publicToken = "zetapush.publicToken"
@@ -52,6 +53,6 @@ open class ZPMessage {
 public enum ZetaPushUtils {
   static func generateResourceName() -> String {
     let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    return String((0..<zetaPushDefaultConfig.resourceLength).compactMap{ _ in letters.randomElement() })
+    return String((0..<ZetaPushDefaultConfig.resourceLength).compactMap{ _ in letters.randomElement() })
   }
 }

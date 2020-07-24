@@ -27,35 +27,43 @@ open class ZetaPushSmartClient: ClientHelper {
   var resourceName = ""
   
   // MARK: Lifecycle
-  public init(apiUrl: String? = nil, sandboxId: String, weakDeploymentId: String, simpleDeploymentId: String, logLevel: XCGLogger.Level = .severe) {
+  public init(apiUrl: String? = nil, sandboxId: String, weakDeploymentId: String, simpleDeploymentId: String, timeout: TimeInterval?, logLevel: XCGLogger.Level = .severe, recorder: ZetapushNetworkRecorder?) {
     self.weakDeploymentId = weakDeploymentId
     self.simpleDeploymentId = simpleDeploymentId
     
     // Get the stored tokens
     let defaults = UserDefaults.standard
-    let storedSandboxId = defaults.string(forKey: zetaPushDefaultKeys.sandboxId)
+    let storedSandboxId = defaults.string(forKey: ZetaPushDefaultKeys.sandboxId)
     
     var stringToken = ""
     var stringPublicToken = ""
     
     if storedSandboxId == sandboxId {
-      if let storedToken = defaults.string(forKey: zetaPushDefaultKeys.token) {
+      if let storedToken = defaults.string(forKey: ZetaPushDefaultKeys.token) {
         stringToken = storedToken
       }
-      if let storedPublicToken = defaults.string(forKey: zetaPushDefaultKeys.publicToken) {
+      if let storedPublicToken = defaults.string(forKey: ZetaPushDefaultKeys.publicToken) {
         stringPublicToken = storedPublicToken
       }
     }
+    
+    let serverConfiguration = ServerConfiguration(
+      serverUrl: apiUrl ?? ZetaPushDefaultConfig.apiUrl,
+      sandboxId: sandboxId,
+      timeout: timeout ?? ZetaPushDefaultConfig.timeout
+    )
+    
     if !stringPublicToken.isEmpty {
       // The user is weakly authenticated and the token must be present
+      
       super.init(
-        apiUrl: apiUrl ?? zetaPushDefaultConfig.apiUrl,
-        sandboxId: sandboxId,
+        serverConfiguration: serverConfiguration,
         authentication: Authentication.weak(
           stringToken,
           deploymentId: weakDeploymentId
         ),
-        logLevel: logLevel
+        logLevel: logLevel,
+        recorder: recorder
       )
       if storedSandboxId == sandboxId {
         self.token = stringToken
@@ -65,14 +73,15 @@ open class ZetaPushSmartClient: ClientHelper {
       if !stringToken.isEmpty {
         // The user is strongly (with a simple authent) authenticated and the token is present
         super.init(
-          apiUrl: apiUrl ?? zetaPushDefaultConfig.apiUrl,
-          sandboxId: sandboxId,
+          serverConfiguration: serverConfiguration,
           authentication: Authentication.simple(
             stringToken,
-            password:"",
+            password: "",
             deploymentId: simpleDeploymentId
           ),
-          logLevel: logLevel)
+          logLevel: logLevel,
+          recorder: recorder
+        )
         
         if storedSandboxId == sandboxId {
           self.token = stringToken
@@ -80,32 +89,32 @@ open class ZetaPushSmartClient: ClientHelper {
       } else {
         // The use is not authenticated, we connect him with a weak authent
         super.init(
-          apiUrl: apiUrl ?? zetaPushDefaultConfig.apiUrl,
-          sandboxId: sandboxId,
+          serverConfiguration: serverConfiguration,
           authentication: Authentication.weak(
             "",
             deploymentId: weakDeploymentId
           ),
-          logLevel: logLevel
+          logLevel: logLevel,
+          recorder: recorder
         )
       }
     }
   }
   
-  public convenience init(sandboxId: String, apiUrl: String? = nil, logLevel: XCGLogger.Level = .severe) {
-    self.init(apiUrl: apiUrl, sandboxId: sandboxId, weakDeploymentId: zetaPushDefaultConfig.weakDeploymentId, simpleDeploymentId: zetaPushDefaultConfig.simpleDeploymentId, logLevel: logLevel)
+  public convenience init(sandboxId: String, apiUrl: String? = nil, timeout: TimeInterval? = nil, logLevel: XCGLogger.Level = .severe, recorder: ZetapushNetworkRecorder?) {
+    self.init(apiUrl: apiUrl, sandboxId: sandboxId, weakDeploymentId: ZetaPushDefaultConfig.weakDeploymentId, simpleDeploymentId: ZetaPushDefaultConfig.simpleDeploymentId, timeout: timeout, logLevel: logLevel, recorder: recorder)
   }
   
   override func storeHandshakeToken(_ authenticationDict: NSDictionary) {
     log.debug(#function)
     let defaults = UserDefaults.standard
-    defaults.set(self.getSandboxId(), forKey: zetaPushDefaultKeys.sandboxId)
+    defaults.set(self.getSandboxId(), forKey: ZetaPushDefaultKeys.sandboxId)
     if let token = authenticationDict["token"] as? String {
-      defaults.set(token, forKey: zetaPushDefaultKeys.token)
+      defaults.set(token, forKey: ZetaPushDefaultKeys.token)
       authentication.update(token: token)
     }
     if let publicToken = authenticationDict["publicToken"] as? String  {
-      defaults.set(publicToken, forKey: zetaPushDefaultKeys.publicToken)
+      defaults.set(publicToken, forKey: ZetaPushDefaultKeys.publicToken)
     }
   }
   
@@ -113,9 +122,9 @@ open class ZetaPushSmartClient: ClientHelper {
     log.debug(#function)
     
     let defaults = UserDefaults.standard
-    defaults.removeObject(forKey: zetaPushDefaultKeys.sandboxId)
-    defaults.removeObject(forKey: zetaPushDefaultKeys.token)
-    defaults.removeObject(forKey: zetaPushDefaultKeys.publicToken)
+    defaults.removeObject(forKey: ZetaPushDefaultKeys.sandboxId)
+    defaults.removeObject(forKey: ZetaPushDefaultKeys.token)
+    defaults.removeObject(forKey: ZetaPushDefaultKeys.publicToken)
     
     self.token = ""
     self.publicToken = ""

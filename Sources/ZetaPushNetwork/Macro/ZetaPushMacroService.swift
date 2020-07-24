@@ -135,7 +135,7 @@ open class ZetaPushMacroService : NSObject {
   public init(_ clientHelper: ClientHelper, deploymentId: String) {
     self.clientHelper = clientHelper
     self.deploymentId = deploymentId
-    self.timeout = clientHelper.timeout
+    self.timeout = clientHelper.serverConfiguration.timeout
     super.init()
     
     let macroChannel = composeServiceChannel("completed")
@@ -151,7 +151,7 @@ open class ZetaPushMacroService : NSObject {
   }
   
   public convenience init(_ clientHelper: ClientHelper) {
-    self.init(clientHelper, deploymentId: zetaPushDefaultConfig.macroDeployementId)
+    self.init(clientHelper, deploymentId: ZetaPushDefaultConfig.macroDeployementId)
   }
   
   private func composeServiceChannel(_ verb: String) -> String {

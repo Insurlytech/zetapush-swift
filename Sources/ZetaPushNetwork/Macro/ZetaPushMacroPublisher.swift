@@ -25,6 +25,6 @@ open class ZetaPushMacroPublisher {
   }
   
   public convenience init(_ clientHelper: ClientHelper) {
-    self.init(clientHelper, deploymentId: zetaPushDefaultConfig.macroDeployementId)
+    self.init(clientHelper, deploymentId: ZetaPushDefaultConfig.macroDeployementId)
   }
 }
