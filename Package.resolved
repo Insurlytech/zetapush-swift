@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/Insurlytech/CometDClient-iOS.git",
         "state": {
           "branch": null,
-          "revision": "7dc8edfe6af41db6c6e64bf8541b64d2c93a559a",
-          "version": "1.0.0"
+          "revision": "44ce6ecd3594a670ea59d375ff69af4c090d0edb",
+          "version": "1.1.0"
         }
       },
       {
@@ -52,7 +52,7 @@
         "state": {
           "branch": null,
           "revision": "2b6054efa051565954e1d2b9da831680026cd768",
-          "version": "4.3.0"
+          "version": "5.0.0"
         }
       },
       {
