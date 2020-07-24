@@ -20,10 +20,12 @@ class ServerRemoteDataSource {
   private let url: URL?
   private let session: URLSession!
   private var task: URLSessionDataTask?
+  private weak var recorder: ZetapushNetworkRecorder?
   
   // MARK: Lifecycle
-  init(configuration: ServerConfiguration) {
+  init(configuration: ServerConfiguration, recorder: ZetapushNetworkRecorder?) {
     self.url = URL(string: configuration.serverUrl)?.appendingPathComponent(configuration.sandboxId)
+    self.recorder = recorder
     
     let timeout = configuration.timeout
     let configuration = URLSessionConfiguration.default
@@ -34,9 +36,11 @@ class ServerRemoteDataSource {
   }
   
   // MARK: Methods
-  func fetchServersURLs(callback: @escaping (Result<[String], ServerRemoteDataSourceError>) -> Void) {
+  func fetchServersURLs(callback: @escaping (Result<[String], Error>) -> Void) {
     guard let url = url, UIApplication.shared.canOpenURL(url) else {
-      callback(.failure(.canNotOpenURL(url: self.url?.absoluteString ?? "")))
+      let error: ServerRemoteDataSourceError = .canNotOpenURL(url: self.url?.absoluteString ?? "")
+      recorder?.record(error: error.toNSError())
+      callback(.failure(error))
       return
     }
     task?.cancel()
@@ -45,22 +49,30 @@ class ServerRemoteDataSource {
       defer { self?.task = nil }
       
       if let error = error {
-        callback(.failure(.failed(error: error)))
+        self?.recorder?.record(error: error as NSError)
+        callback(.failure(error))
       } else if let response = response as? HTTPURLResponse, response.statusCode != 200 {
-        callback(.failure(.response(response: response)))
+        let error: ServerRemoteDataSourceError = .response(response: response)
+        self?.recorder?.record(error: error.toNSError())
+        callback(.failure(error))
       } else if let data = data {
         do {
           let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
           if let servers = json?["servers"] as? [String] {
             callback(.success(servers))
           } else {
-            callback(.failure(.serversNotFound))
+            let error: ServerRemoteDataSourceError = .serversNotFound
+            self?.recorder?.record(error: error.toNSError())
+            callback(.failure(error))
           }
         } catch let error {
-          callback(.failure(.failed(error: error)))
+          self?.recorder?.record(error: error as NSError)
+          callback(.failure(error))
         }
       } else {
-        callback(.failure(.unknown))
+        let error: ServerRemoteDataSourceError = .unknown
+        self?.recorder?.record(error: error.toNSError())
+        callback(.failure(error))
       }
     }
     task?.resume()

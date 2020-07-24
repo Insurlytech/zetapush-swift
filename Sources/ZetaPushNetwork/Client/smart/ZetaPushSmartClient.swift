@@ -27,7 +27,7 @@ open class ZetaPushSmartClient: ClientHelper {
   var resourceName = ""
   
   // MARK: Lifecycle
-  public init(apiUrl: String? = nil, sandboxId: String, weakDeploymentId: String, simpleDeploymentId: String, timeout: TimeInterval?, logLevel: XCGLogger.Level = .severe) {
+  public init(apiUrl: String? = nil, sandboxId: String, weakDeploymentId: String, simpleDeploymentId: String, timeout: TimeInterval?, logLevel: XCGLogger.Level = .severe, recorder: ZetapushNetworkRecorder?) {
     self.weakDeploymentId = weakDeploymentId
     self.simpleDeploymentId = simpleDeploymentId
     
@@ -62,7 +62,8 @@ open class ZetaPushSmartClient: ClientHelper {
           stringToken,
           deploymentId: weakDeploymentId
         ),
-        logLevel: logLevel
+        logLevel: logLevel,
+        recorder: recorder
       )
       if storedSandboxId == sandboxId {
         self.token = stringToken
@@ -78,7 +79,9 @@ open class ZetaPushSmartClient: ClientHelper {
             password: "",
             deploymentId: simpleDeploymentId
           ),
-          logLevel: logLevel)
+          logLevel: logLevel,
+          recorder: recorder
+        )
         
         if storedSandboxId == sandboxId {
           self.token = stringToken
@@ -91,14 +94,15 @@ open class ZetaPushSmartClient: ClientHelper {
             "",
             deploymentId: weakDeploymentId
           ),
-          logLevel: logLevel
+          logLevel: logLevel,
+          recorder: recorder
         )
       }
     }
   }
   
-  public convenience init(sandboxId: String, apiUrl: String? = nil, timeout: TimeInterval? = nil, logLevel: XCGLogger.Level = .severe) {
-    self.init(apiUrl: apiUrl, sandboxId: sandboxId, weakDeploymentId: ZetaPushDefaultConfig.weakDeploymentId, simpleDeploymentId: ZetaPushDefaultConfig.simpleDeploymentId, timeout: timeout, logLevel: logLevel)
+  public convenience init(sandboxId: String, apiUrl: String? = nil, timeout: TimeInterval? = nil, logLevel: XCGLogger.Level = .severe, recorder: ZetapushNetworkRecorder?) {
+    self.init(apiUrl: apiUrl, sandboxId: sandboxId, weakDeploymentId: ZetaPushDefaultConfig.weakDeploymentId, simpleDeploymentId: ZetaPushDefaultConfig.simpleDeploymentId, timeout: timeout, logLevel: logLevel, recorder: recorder)
   }
   
   override func storeHandshakeToken(_ authenticationDict: NSDictionary) {

@@ -44,11 +44,13 @@ open class ClientHelper: NSObject {
   
   let log = XCGLogger(identifier: "zetaPushLogger", includeDefaultDestinations: true)
   let tags = XCGLogger.Constants.userInfoKeyTags
+  private weak var recorder: ZetapushNetworkRecorder?
   
   // MARK: Lifecycle
-  public init(serverConfiguration: ServerConfiguration, authentication: AbstractHandshake, resource: String = "", logLevel: XCGLogger.Level = .severe) {
+  public init(serverConfiguration: ServerConfiguration, authentication: AbstractHandshake, resource: String = "", logLevel: XCGLogger.Level = .severe, recorder: ZetapushNetworkRecorder?) {
     self.serverConfiguration = serverConfiguration
-    self.remote = ServerRemoteDataSource(configuration: serverConfiguration)
+    self.recorder = recorder
+    self.remote = ServerRemoteDataSource(configuration: serverConfiguration, recorder: recorder)
     self.authentication = authentication
     self.resource = resource
     self.cometdClient = CometdClient()
@@ -114,14 +116,14 @@ open class ClientHelper: NSObject {
         self.configureCometdClient()
       case .failure(let error):
         self.log.zp.error("ZetaPushNetwork failed to fetch servers URLs : \(error.localizedDescription)")
-        self.delegate?.onConnectionFailed(self, error: .connectionFailed(error: error))
+        self.delegate?.onConnectionFailed(self, error: ClientHelperError.connectionFailed)
       }
     }
   }
   
   private func configureCometdClient() {
     log.zp.debug("ZetaPushNetwork configure CometdClient")
-    cometdClient.configure(url: server)
+    cometdClient.configure(url: server, recorder: recorder)
     let handshakeFields = authentication.getHandshakeFields(self)
     log.zp.debug("authentification = \(authentication)")
     cometdClient.handshake(fields: handshakeFields)
@@ -295,16 +297,24 @@ extension ClientHelper: CometdClientDelegate {
     delegate?.onSuccessfulHandshake(self)
   }
 
-  public func handshakeDidFailed(error: CometDClientError, from client: CometdClientContract) {
+  public func handshakeDidFailed(error: Error, from client: CometdClientContract) {
     log.zp.error("ClientHelper Handshake Failed")
-    delegate?.onFailedHandshake(self, error: .handshakeFailed(error: error))
+    var handshakeError: ClientHelperError = .handshakeFailed(reason: nil)
+    if let error = error as? CometDClientError {
+      switch error {
+      case .handshake(let reason):
+        handshakeError = .handshakeFailed(reason: reason)
+      default: break
+      }
+    }
+    delegate?.onFailedHandshake(self, error: handshakeError)
   }
   
-  public func didDisconnected(error: CometDClientError?, from client: CometdClientContract) {
+  public func didDisconnected(error: Error?, from client: CometdClientContract) {
     log.zp.debug("ClientHelper Disconnected from Cometd server")
     connected = false
-    if let error = error {
-      delegate?.onConnectionClosed(self, error: .connectionClosed(error: error))
+    if error != nil {
+      delegate?.onConnectionClosed(self, error: ClientHelperError.connectionClosed)
     } else {
       delegate?.onConnectionClosed(self, error: nil)
     }
@@ -315,14 +325,14 @@ extension ClientHelper: CometdClientDelegate {
     delegate?.onConnectionClosedAdviceReconnect(self)
   }
   
-  public func didLostConnection(error: CometDClientError, from client: CometdClientContract) {
+  public func didLostConnection(error: Error, from client: CometdClientContract) {
     log.zp.error("ClientHelper lost connection")
     if wasConnected {
       DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + .seconds(automaticReconnectionDelay)) { [weak self] in
         self?.connect()
       }
     }
-    delegate?.onConnectionBroken(self, error: .connectionBroken(error: error))
+    delegate?.onConnectionBroken(self, error: ClientHelperError.connectionBroken)
   }
   
   public func didSubscribeToChannel(channel: String, from client: CometdClientContract) {
@@ -335,12 +345,12 @@ extension ClientHelper: CometdClientDelegate {
     delegate?.onDidUnsubscribeFromChannel(self, channel: channel)
   }
   
-  public func subscriptionFailedWithError(error: CometDClientError, from client: CometdClientContract) {
+  public func subscriptionFailedWithError(error: Error, from client: CometdClientContract) {
     log.zp.error("ClientHelper Subscription failed")
-    delegate?.onSubscriptionFailedWithError(self, error: .subscription(error: error))
+    delegate?.onSubscriptionFailedWithError(self, error: ClientHelperError.subscription)
   }
   
-  public func didWriteError(error: CometDClientError, from client: CometdClientContract) {
+  public func didWriteError(error: Error, from client: CometdClientContract) {
     log.zp.debug("ClientHelper writeErrorReceived \(error.localizedDescription)")
   }
 }
