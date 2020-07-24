@@ -30,7 +30,7 @@ open class ZetaPushMacroListener {
   open func register() { }
   
   public convenience init(_ clientHelper: ClientHelper) {
-    self.init(clientHelper, deploymentId: zetaPushDefaultConfig.macroDeployementId)
+    self.init(clientHelper, deploymentId: ZetaPushDefaultConfig.macroDeployementId)
   }
   /**
    

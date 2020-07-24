@@ -18,9 +18,9 @@ import UIKit
 // MARK: - ClientHelper
 open class ClientHelper: NSObject {
   // MARK: Properties
-  var sandboxId = ""
+  let serverConfiguration: ServerConfiguration
+  private let remote: ServerRemoteDataSource
   var server = ""
-  var apiUrl = ""
   var connected = false
   var userId = ""
   var resource = ""
@@ -44,28 +44,30 @@ open class ClientHelper: NSObject {
   
   let log = XCGLogger(identifier: "zetaPushLogger", includeDefaultDestinations: true)
   let tags = XCGLogger.Constants.userInfoKeyTags
-  public var timeout: TimeInterval = ZetaPushConstants.timeout
+  private weak var recorder: ZetapushNetworkRecorder?
   
   // MARK: Lifecycle
-  public init(apiUrl: String, sandboxId: String, authentication: AbstractHandshake, resource: String = "", logLevel: XCGLogger.Level = .severe) {
-    self.sandboxId = sandboxId
+  public init(serverConfiguration: ServerConfiguration, authentication: AbstractHandshake, resource: String = "", logLevel: XCGLogger.Level = .severe, recorder: ZetapushNetworkRecorder?) {
+    self.serverConfiguration = serverConfiguration
+    self.recorder = recorder
+    self.remote = ServerRemoteDataSource(configuration: serverConfiguration, recorder: recorder)
     self.authentication = authentication
     self.resource = resource
-    self.apiUrl = apiUrl
     self.cometdClient = CometdClient()
     super.init()
     
     self.logLevel = logLevel
     log.setup(level: logLevel)
+    self.cometdClient.log.outputLevel = self.logLevel
     
     // Handle resource
     let defaults = UserDefaults.standard
     if resource.isEmpty {
-      if let storedResource = defaults.string(forKey: zetaPushDefaultKeys.resource) {
+      if let storedResource = defaults.string(forKey: ZetaPushDefaultKeys.resource) {
         self.resource = storedResource
       } else {
         self.resource = ZetaPushUtils.generateResourceName()
-        defaults.set(self.resource, forKey: zetaPushDefaultKeys.resource)
+        defaults.set(self.resource, forKey: ZetaPushDefaultKeys.resource)
       }
     }
     
@@ -93,67 +95,37 @@ open class ClientHelper: NSObject {
   
   // Connect to server
   open func connect() {
-    log.debug("Client Connection: check the validation of server url : \(server)")
+    log.zp.debug("ZetaPushNetwork try to connect")
     
     guard server.isEmpty else {
-      log.zp.debug("Client Connection: ZetaPush configured Server")
-      log.zp.debug(self.server)
+      log.zp.debug("ZetaPushNetwork already has a server url")
       configureCometdClient()
       return
     }
-    let stringUrl = self.apiUrl + "/" + sandboxId
-    guard let url = URL(string: stringUrl), UIApplication.shared.canOpenURL(url) else {
-      self.log.verbose("ZP server -> can't open url : " + stringUrl)
-      return
-    }
     
-    // Check the http://api.zpush.io with sandboxId
-    self.log.verbose("ZP server -> target url : " + url.description)
-    
-    let configuration = URLSessionConfiguration.default
-    configuration.timeoutIntervalForRequest = timeout
-    configuration.timeoutIntervalForResource = timeout * 3
-    let task = URLSession(configuration: configuration).dataTask(with: url) { [weak self] data, response, error in
+    log.zp.debug("ZetaPushNetwork try to fetch servers URLs")
+    remote.fetchServersURLs { [weak self] result in
       guard let self = self else { return }
-      guard let data = data else {
-        self.log.zp.error("Client Connection: No server for the sandbox")
-        return
+      switch result {
+      case .success(let servers):
+        self.log.zp.debug("ZetaPushNetwork succeded to fetch servers URLs : \(servers)")
+        guard let randomServer = servers.randomElement() else { return }
+        self.log.zp.debug("ZetaPushNetwork select a random server : \(randomServer)")
+        self.server = randomServer + "/strd"
+        
+        self.configureCometdClient()
+      case .failure(let error):
+        self.log.zp.error("ZetaPushNetwork failed to fetch servers URLs : \(error.localizedDescription)")
+        self.delegate?.onConnectionFailed(self, error: ClientHelperError.connectionFailed)
       }
-      guard error == nil else {
-        self.log.error (error!)
-        return
-      }
-      
-      self.log.verbose("ZP server -> server response data : " + data.description)
-      let jsonAnyTest = try? JSONSerialization.jsonObject(with: data, options: [])
-      let jsonTest = jsonAnyTest as? [String: Any] ?? [:]
-      self.log.verbose("ZP server -> server response : " + jsonTest.description)
-      
-      guard let jsonAny = try? JSONSerialization.jsonObject(with: data, options: []),
-        let json = jsonAny as? [String : Any],
-        let servers = json["servers"] as? [Any] else {
-          self.log.zp.error("Client Connection: Failed to parse data from server")
-          return
-      }
-      
-      guard let randomServer = servers.randomElement() as? String else {
-        self.log.zp.error("Client Connection: No server in servers object")
-        return
-      }
-      self.server = randomServer + "/strd"
-      self.log.debug("Client Connection: ZetaPush selected Server")
-      self.log.debug("Client Connection: server returned server url : \(self.server)")
-      
-      self.cometdClient.log.outputLevel = self.logLevel
-      self.configureCometdClient()
     }
-    task.resume()
   }
   
   private func configureCometdClient() {
-    cometdClient.configure(url: server)
+    log.zp.debug("ZetaPushNetwork configure CometdClient")
+    cometdClient.configure(url: server, recorder: recorder)
     let handshakeFields = authentication.getHandshakeFields(self)
-    self.log.debug("authentification = \(authentication)")
+    log.zp.debug("authentification = \(authentication)")
     cometdClient.handshake(fields: handshakeFields)
   }
   
@@ -204,7 +176,7 @@ open class ClientHelper: NSObject {
   }
   
   open func composeServiceChannel(_ verb: String, deploymentId: String) -> String {
-    return "/service/" + sandboxId + "/" + deploymentId + "/" + verb
+    return "/service/" + serverConfiguration.sandboxId + "/" + deploymentId + "/" + verb
   }
   
   open func getLogLevel() -> XCGLogger.Level {
@@ -237,7 +209,7 @@ open class ClientHelper: NSObject {
   }
   
   open func getSandboxId() -> String {
-    return sandboxId
+    return serverConfiguration.sandboxId
   }
   
   open func getServer() -> String {
@@ -324,16 +296,28 @@ extension ClientHelper: CometdClientDelegate {
     
     delegate?.onSuccessfulHandshake(self)
   }
-  
-  public func handshakeDidFailed(from client: CometdClientContract) {
+
+  public func handshakeDidFailed(error: Error, from client: CometdClientContract) {
     log.zp.error("ClientHelper Handshake Failed")
-    delegate?.onFailedHandshake(self)
+    var handshakeError: ClientHelperError = .handshakeFailed(reason: nil)
+    if let error = error as? CometDClientError {
+      switch error {
+      case .handshake(let reason):
+        handshakeError = .handshakeFailed(reason: reason)
+      default: break
+      }
+    }
+    delegate?.onFailedHandshake(self, error: handshakeError)
   }
   
   public func didDisconnected(error: Error?, from client: CometdClientContract) {
     log.zp.debug("ClientHelper Disconnected from Cometd server")
     connected = false
-    delegate?.onConnectionClosed(self)
+    if error != nil {
+      delegate?.onConnectionClosed(self, error: ClientHelperError.connectionClosed)
+    } else {
+      delegate?.onConnectionClosed(self, error: nil)
+    }
   }
   
   public func didAdvisedToReconnect(from client: CometdClientContract) {
@@ -341,14 +325,14 @@ extension ClientHelper: CometdClientDelegate {
     delegate?.onConnectionClosedAdviceReconnect(self)
   }
   
-  public func didFailConnection(error: Error?, from client: CometdClientContract) {
-    log.zp.error("ClientHelper Failed to connect to Cometd server!")
+  public func didLostConnection(error: Error, from client: CometdClientContract) {
+    log.zp.error("ClientHelper lost connection")
     if wasConnected {
       DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + .seconds(automaticReconnectionDelay)) { [weak self] in
         self?.connect()
       }
     }
-    delegate?.onConnectionBroken(self)
+    delegate?.onConnectionBroken(self, error: ClientHelperError.connectionBroken)
   }
   
   public func didSubscribeToChannel(channel: String, from client: CometdClientContract) {
@@ -361,9 +345,9 @@ extension ClientHelper: CometdClientDelegate {
     delegate?.onDidUnsubscribeFromChannel(self, channel: channel)
   }
   
-  public func subscriptionFailedWithError(error: SubscriptionError, from client: CometdClientContract) {
+  public func subscriptionFailedWithError(error: Error, from client: CometdClientContract) {
     log.zp.error("ClientHelper Subscription failed")
-    delegate?.onSubscriptionFailedWithError(self, error: error)
+    delegate?.onSubscriptionFailedWithError(self, error: ClientHelperError.subscription)
   }
   
   public func didWriteError(error: Error, from client: CometdClientContract) {
