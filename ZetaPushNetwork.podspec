@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |spec|
   spec.name         = "ZetaPushNetwork"
-  spec.version      = "3.0.0"
+  spec.version      = "3.1.0"
   spec.summary      = "Swift client for ZetaPush"
   spec.description  = <<-DESC
   Swift client for ZetaPush
@@ -28,5 +28,5 @@ Pod::Spec.new do |spec|
 
   spec.dependency "PromiseKit", "~> 6.13"
   spec.dependency "Gloss", "~> 3.0"
-  spec.dependency "CometDClient", "~> 1.0.0"
+  spec.dependency "CometDClient", "~> 1.1.0"
 end
