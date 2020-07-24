@@ -13,7 +13,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-      .package(name: "CometDClient", url: "https://github.com/Insurlytech/CometDClient-iOS.git", .upToNextMajor(from: "1.0.0")),
+      .package(name: "CometDClient", url: "https://github.com/Insurlytech/CometDClient-iOS.git", .upToNextMajor(from: "1.1.0")),
 //      .package(name: "CometDClient", path: "../CometDClient-iOS"), //AGU
       .package(url: "https://github.com/hkellaway/Gloss.git", .upToNextMajor(from: "3.1.0")),
       .package(url: "https://github.com/mxcl/PromiseKit", .upToNextMajor(from: "6.13.1")),
