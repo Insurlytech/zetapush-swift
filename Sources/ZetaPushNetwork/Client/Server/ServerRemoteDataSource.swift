@@ -31,6 +31,10 @@ class ServerRemoteDataSource {
     let configuration = URLSessionConfiguration.default
     configuration.timeoutIntervalForRequest = timeout
     configuration.timeoutIntervalForResource = timeout * 3
+    configuration.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+    if #available(iOS 11.0, *) {
+      configuration.waitsForConnectivity = true
+    }
     
     self.session = URLSession(configuration: configuration)
   }
