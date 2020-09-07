@@ -1,6 +1,11 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file.
 
+## 3.1.1
+* Fix - Set waitsForConnectivity in URLSessionConfiguration  
+[Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
+[#36](https://github.com/Insurlytech/zetapush-swift/pull/34)
+
 ## 3.1.0
 * Errors - Create recorder for sharing important errors  
 * Errors - Refact error to be more precise on the failure  
