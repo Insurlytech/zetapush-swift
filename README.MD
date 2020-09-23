@@ -18,7 +18,7 @@ Check out [Get Started](http://cocoapods.org/) tab on [cocoapods.org](http://coc
 
 To use ZetaPushNetwork in your 'Podfile':
   
-    pod 'ZetaPushNetwork', '~> 3.1.1'
+    pod 'ZetaPushNetwork', '~> 3.1.2'
 
 Then run:
 

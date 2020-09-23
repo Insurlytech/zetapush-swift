@@ -1,10 +1,15 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file.
 
+## 3.1.2
+* Dependencies - Fix version  
+[Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
+[#38](https://github.com/Insurlytech/zetapush-swift/pull/38)
+
 ## 3.1.1
 * Fix - Set waitsForConnectivity in URLSessionConfiguration  
 [Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
-[#36](https://github.com/Insurlytech/zetapush-swift/pull/34)
+[#36](https://github.com/Insurlytech/zetapush-swift/pull/36)
 
 ## 3.1.0
 * Errors - Create recorder for sharing important errors  
