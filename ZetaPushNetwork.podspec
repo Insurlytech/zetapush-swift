@@ -22,11 +22,12 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => "https://github.com/Insurlytech/zetapush-swift.git", :tag => "#{spec.version}" }
   spec.source_files  = "Sources/**/*.{swift}"
   spec.exclude_files = "Classes/Exclude"
+  spec.swift_version = '5.3'
 
   spec.framework  = "UIKit", "Foundation"
   spec.requires_arc = true
 
-  spec.dependency "PromiseKit", "~> 6.13"
-  spec.dependency "Gloss", "~> 3.0"
-  spec.dependency "CometDClient", "~> 1.1.0"
+  spec.dependency "PromiseKit", "6.13.3"
+  spec.dependency "Gloss", "3.2.1"
+  spec.dependency "CometDClient", "1.1.3"
 end
