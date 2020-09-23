@@ -13,10 +13,10 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-      .package(name: "CometDClient", url: "https://github.com/Insurlytech/CometDClient-iOS.git", .upToNextMajor(from: "1.1.1")),
+      .package(name: "CometDClient", url: "https://github.com/Insurlytech/CometDClient-iOS.git", .exact("1.1.3")),
 //      .package(name: "CometDClient", path: "../CometDClient-iOS"), //AGU
-      .package(url: "https://github.com/hkellaway/Gloss.git", .upToNextMajor(from: "3.1.0")),
-      .package(url: "https://github.com/mxcl/PromiseKit", .upToNextMajor(from: "6.13.1")),
+      .package(url: "https://github.com/hkellaway/Gloss.git", .exact("3.2.1")),
+      .package(url: "https://github.com/mxcl/PromiseKit", .exact("6.13.3")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
