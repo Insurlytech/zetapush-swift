@@ -1,28 +1,33 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file.
 
+## 3.1.3
+* Fix iOS 14 canOpenUrl problem when users change their default browser
+[Steven WATREMEZ](https://github.com/StevenWatremez)
+[#39](https://github.com/Insurlytech/zetapush-swift/pull/40)
+
 ## 3.1.2
 * Dependencies - Fix version  
-[Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
+[Anthony GUIGUEN](https://github.com/anthonyGuiguen)
 [#38](https://github.com/Insurlytech/zetapush-swift/pull/38)
 
 ## 3.1.1
 * Fix - Set waitsForConnectivity in URLSessionConfiguration  
-[Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
+[Anthony GUIGUEN](https://github.com/anthonyGuiguen)
 [#36](https://github.com/Insurlytech/zetapush-swift/pull/36)
 
 ## 3.1.0
 * Errors - Create recorder for sharing important errors  
 * Errors - Refact error to be more precise on the failure  
-[Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
+[Anthony GUIGUEN](https://github.com/anthonyGuiguen)
 [#34](https://github.com/Insurlytech/zetapush-swift/pull/34)
 
 ## 3.0.0
 * CometD - Remove CometDClient from ZetaPush  
-[Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
+[Anthony GUIGUEN](https://github.com/anthonyGuiguen)
 [#32](https://github.com/Insurlytech/zetapush-swift/pull/32)
 * SPM - Migrate ZetaPushNetworks to Swift Package Manager  
-[Anthony GUIGUEN](https://https://github.com/anthonyGuiguen)
+[Anthony GUIGUEN](https://github.com/anthonyGuiguen)
 [#31](https://github.com/Insurlytech/zetapush-swift/pull/31)
 
 ## 2.4.2
