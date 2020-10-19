@@ -13,15 +13,15 @@ enum ErrorConstant {
 }
 
 public enum ServerRemoteDataSourceError: Error {
-  case canNotOpenURL(url: String), response(response: HTTPURLResponse), serversNotFound, unknown
+  case urlNotFound(url: String), response(response: HTTPURLResponse), serversNotFound, unknown
   
   func toNSError() -> NSError {
     switch self {
-    case .canNotOpenURL(let url):
-      return NSError(domain: ErrorConstant.domain, code: 403, userInfo: [
-        NSLocalizedDescriptionKey: NSLocalizedString("Can not open URL", comment: ""),
-        NSLocalizedFailureReasonErrorKey: NSLocalizedString("Can not open this url : \(url).", comment: ""),
-        ErrorConstant.code: "ERROR_CLIENT_HELPER_CAN_NOT_OPEN_URL"
+    case .urlNotFound(let url):
+      return NSError(domain: ErrorConstant.domain, code: 0, userInfo: [
+        NSLocalizedDescriptionKey: NSLocalizedString("Url not found", comment: ""),
+        NSLocalizedFailureReasonErrorKey: NSLocalizedString("Can not found this url : \(url).", comment: ""),
+        ErrorConstant.code: "ERROR_CLIENT_HELPER_CANNOT_FOUND_URL"
       ])
     case .response(let response):
       return NSError(domain: ErrorConstant.domain, code: response.statusCode, userInfo: [
