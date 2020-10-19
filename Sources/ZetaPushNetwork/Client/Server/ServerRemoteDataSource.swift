@@ -42,7 +42,7 @@ class ServerRemoteDataSource {
   // MARK: Methods
   func fetchServersURLs(callback: @escaping (Result<[String], Error>) -> Void) {
     guard let url = url else {
-      let error: ServerRemoteDataSourceError = .canNotOpenURL(url: self.url?.absoluteString ?? "")
+      let error: ServerRemoteDataSourceError = .urlNotFound(url: self.url?.absoluteString ?? "")
       recorder?.record(error: error.toNSError())
       callback(.failure(error))
       return
