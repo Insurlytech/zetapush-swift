@@ -20,6 +20,7 @@ enum ZetaPushDefaultConfig {
 enum ZetaPushDefaultKeys {
   static let sandboxId = "zetapush.sandboxId"
   static let token = "zetapush.token"
+  static let isTokensMigratedToKeychain = "zetapush.isTokensMigrateToKeychain"
   static let publicToken = "zetapush.publicToken"
   static let resource = "zetapush.resource"
 }
