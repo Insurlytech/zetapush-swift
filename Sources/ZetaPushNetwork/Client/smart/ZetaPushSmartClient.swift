@@ -147,6 +147,7 @@ open class ZetaPushSmartClient: ClientHelper {
     eraseHandshakeToken()
   }
   
+  /// Migrate tokans to a secured storage if needed. Remove this method after 01/01/2022
   private static func migrateUserDefaultToKeychainIfNeeded(keychain: ZPKeychainDAO) {
     let userDefaults = UserDefaults.standard
 
