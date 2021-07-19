@@ -124,9 +124,9 @@ open class ZetaPushSmartClient: ClientHelper {
   override func eraseHandshakeToken() {
     log.debug(#function)
     
-    try? keychain.deleteAll(from: .sandboxId(label: ZetaPushDefaultKeys.sandboxId, server: ZetaPushDefaultConfig.apiUrl))
-    try? keychain.deleteAll(from: .token(label: ZetaPushDefaultKeys.token, server: ZetaPushDefaultConfig.apiUrl))
-    try? keychain.deleteAll(from: .publicToken(label: ZetaPushDefaultKeys.publicToken, server: ZetaPushDefaultConfig.apiUrl))
+    try? keychain.delete(item: .sandboxId(label: ZetaPushDefaultKeys.sandboxId, server: ZetaPushDefaultConfig.apiUrl))
+    try? keychain.delete(item: .token(label: ZetaPushDefaultKeys.token, server: ZetaPushDefaultConfig.apiUrl))
+    try? keychain.delete(item: .publicToken(label: ZetaPushDefaultKeys.publicToken, server: ZetaPushDefaultConfig.apiUrl))
     
     self.token = ""
     self.publicToken = ""
@@ -147,7 +147,8 @@ open class ZetaPushSmartClient: ClientHelper {
     eraseHandshakeToken()
   }
   
-  /// Migrate tokans to a secured storage if needed. Remove this method after 01/01/2022
+  /// Migrate tokans to a secured storage if needed.
+  @available(*, deprecated, message: "Remove this method after 01/01/2022")
   private static func migrateUserDefaultToKeychainIfNeeded(keychain: ZPKeychainDAO) {
     let userDefaults = UserDefaults.standard
 

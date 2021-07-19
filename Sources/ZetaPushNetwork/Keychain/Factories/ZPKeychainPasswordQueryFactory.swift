@@ -9,12 +9,11 @@
 import Foundation
 
 enum ZPKeychainPasswordQueryFactory {
-  /// Create query for Keychain operations of type kSecClassGenericPassword
+  /// Create query for Keychain operations of type kSecClassInternetPassword
   /// - Parameters:
   ///   - operation: Refer to KeychainOperation (add, update, retrieve, ...)
-  ///   - account: Associated account to the password (ex: email)
-  ///   - service: Associated service to the password (ex: App bundle identifier)
-  /// - Important: For a keychain item of class kSecClassGenericPassword, the primary key is the combination of kSecAttrAccount and kSecAttrService. In other words, the tuple allows you to uniquely identify a generic password in the Keychain.
+  ///   - label: Associated label to the token (ex: publicToken)
+  ///   - server: Associated server to the token
   static func createQuery(for operation: ZPKeychainOperationType, associatedTo label: String, and server: String) -> CFDictionary {
     switch operation {
     case .add:
@@ -62,5 +61,5 @@ enum ZPKeychainPasswordQueryFactory {
       kSecAttrServer: server
     ] as NSDictionary
   }
-  private static func createQuerytoDeleteAll() -> CFDictionary { [kSecClass: kSecClassGenericPassword] as NSDictionary }
+  private static func createQuerytoDeleteAll() -> CFDictionary { [kSecClass: kSecClassInternetPassword] as NSDictionary }
 }
