@@ -25,6 +25,7 @@ open class ZetaPushSmartClient: ClientHelper {
   var weakDeploymentId = ""
   var simpleDeploymentId = ""
   var resourceName = ""
+  private let keychain = ZPKeychainDAOFactory.createDAO()
   
   // MARK: Lifecycle
   public init(apiUrl: String? = nil, sandboxId: String, weakDeploymentId: String, simpleDeploymentId: String, timeout: TimeInterval?, logLevel: XCGLogger.Level = .severe, recorder: ZetapushNetworkRecorder?) {
@@ -32,17 +33,19 @@ open class ZetaPushSmartClient: ClientHelper {
     self.simpleDeploymentId = simpleDeploymentId
     
     // Get the stored tokens
-    let defaults = UserDefaults.standard
-    let storedSandboxId = defaults.string(forKey: ZetaPushDefaultKeys.sandboxId)
+    ZetaPushSmartClient.migrateUserDefaultToKeychainIfNeeded(keychain: keychain)
+    
+    let storedSandboxId = try? keychain.get(item: .sandboxId(label: ZetaPushDefaultKeys.sandboxId, server: ZetaPushDefaultConfig.apiUrl))
     
     var stringToken = ""
     var stringPublicToken = ""
     
     if storedSandboxId == sandboxId {
-      if let storedToken = defaults.string(forKey: ZetaPushDefaultKeys.token) {
+      if let storedToken = try? keychain.get(item: .token(label: ZetaPushDefaultKeys.token, server: ZetaPushDefaultConfig.apiUrl)) {
         stringToken = storedToken
       }
-      if let storedPublicToken = defaults.string(forKey: ZetaPushDefaultKeys.publicToken) {
+      
+      if let storedPublicToken = try? keychain.get(item: .publicToken(label: ZetaPushDefaultKeys.publicToken, server: ZetaPushDefaultConfig.apiUrl)) {
         stringPublicToken = storedPublicToken
       }
     }
@@ -107,24 +110,23 @@ open class ZetaPushSmartClient: ClientHelper {
   
   override func storeHandshakeToken(_ authenticationDict: NSDictionary) {
     log.debug(#function)
-    let defaults = UserDefaults.standard
-    defaults.set(self.getSandboxId(), forKey: ZetaPushDefaultKeys.sandboxId)
+    
+    try? keychain.set(value: self.getSandboxId(), item: .sandboxId(label: ZetaPushDefaultKeys.sandboxId, server: ZetaPushDefaultConfig.apiUrl))
     if let token = authenticationDict["token"] as? String {
-      defaults.set(token, forKey: ZetaPushDefaultKeys.token)
+      try? keychain.set(value: token, item: .token(label: ZetaPushDefaultKeys.token, server: ZetaPushDefaultConfig.apiUrl))
       authentication.update(token: token)
     }
     if let publicToken = authenticationDict["publicToken"] as? String  {
-      defaults.set(publicToken, forKey: ZetaPushDefaultKeys.publicToken)
+      try? keychain.set(value: publicToken, item: .publicToken(label: ZetaPushDefaultKeys.publicToken, server: ZetaPushDefaultConfig.apiUrl))
     }
   }
   
   override func eraseHandshakeToken() {
     log.debug(#function)
     
-    let defaults = UserDefaults.standard
-    defaults.removeObject(forKey: ZetaPushDefaultKeys.sandboxId)
-    defaults.removeObject(forKey: ZetaPushDefaultKeys.token)
-    defaults.removeObject(forKey: ZetaPushDefaultKeys.publicToken)
+    try? keychain.deleteAll(from: .sandboxId(label: ZetaPushDefaultKeys.sandboxId, server: ZetaPushDefaultConfig.apiUrl))
+    try? keychain.deleteAll(from: .token(label: ZetaPushDefaultKeys.token, server: ZetaPushDefaultConfig.apiUrl))
+    try? keychain.deleteAll(from: .publicToken(label: ZetaPushDefaultKeys.publicToken, server: ZetaPushDefaultConfig.apiUrl))
     
     self.token = ""
     self.publicToken = ""
@@ -143,5 +145,31 @@ open class ZetaPushSmartClient: ClientHelper {
     
     // Delete previously stored tokens
     eraseHandshakeToken()
+  }
+  
+  private static func migrateUserDefaultToKeychainIfNeeded(keychain: ZPKeychainDAO) {
+    let userDefaults = UserDefaults.standard
+
+    guard !userDefaults.bool(forKey: ZetaPushDefaultKeys.isTokensMigratedToKeychain) else {
+      return
+    }
+    
+    // put all three in keychain if it's exist to migrate from userDefault to Keychain
+    if let storedSandboxId = userDefaults.string(forKey: ZetaPushDefaultKeys.sandboxId) {
+      try? keychain.set(value: storedSandboxId, item: .sandboxId(label: ZetaPushDefaultKeys.sandboxId, server: ZetaPushDefaultConfig.apiUrl))
+    }
+    if let storedToken = userDefaults.string(forKey: ZetaPushDefaultKeys.token) {
+      try? keychain.set(value: storedToken, item: .token(label: ZetaPushDefaultKeys.token, server: ZetaPushDefaultConfig.apiUrl))
+    }
+    if let storedPublicToken = userDefaults.string(forKey: ZetaPushDefaultKeys.publicToken) {
+      try? keychain.set(value: storedPublicToken, item: .publicToken(label: ZetaPushDefaultKeys.publicToken, server: ZetaPushDefaultConfig.apiUrl))
+    }
+    
+    // Erase tokens from userDefaults
+    userDefaults.removeObject(forKey: ZetaPushDefaultKeys.sandboxId)
+    userDefaults.removeObject(forKey: ZetaPushDefaultKeys.token)
+    userDefaults.removeObject(forKey: ZetaPushDefaultKeys.publicToken)
+
+    userDefaults.set(true, forKey: ZetaPushDefaultKeys.isTokensMigratedToKeychain)
   }
 }
