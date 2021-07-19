@@ -1,10 +1,15 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file.
 
+## 3.1.4
+* Update token storage
+[Steven WATREMEZ](https://github.com/StevenWatremez)
+[#42](https://github.com/Insurlytech/zetapush-swift/pull/42)
+
 ## 3.1.3
 * Fix iOS 14 canOpenUrl problem when users change their default browser
 [Steven WATREMEZ](https://github.com/StevenWatremez)
-[#39](https://github.com/Insurlytech/zetapush-swift/pull/40)
+[#40](https://github.com/Insurlytech/zetapush-swift/pull/40)
 
 ## 3.1.2
 * Dependencies - Fix version  
